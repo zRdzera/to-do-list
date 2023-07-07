@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tododoo app</title>
+
+        <link rel="icon" href="assets/todo-icon.png">
+        <script type="module" src="../src/index.js"></script>
+    </head>
+    <body>
+        <form action="" id="form-new-task">
+            <div>
+                <label for="title-input">Title</label>
+                <input type="text" id="title-input" required>
+            </div>
+            <div>
+                <label for="due-date-input">Due date</label>
+                <input type="text" id="due-date-input">
+            </div>
+            <div>
+                <label for="description-input">Description</label>
+                <input type="date" id="description-input">
+            </div>
+            <fieldset>
+                <legend>Priority</legend>
+
+                <div>
+                    <label for="low">Low</label>
+                    <input type="radio" id="low" name="priority" value="low">
+                </div>
+                <div>
+                    <label for="medium">Medium</label>
+                    <input type="radio" id="medium" name="priority" value="medium">
+                </div>
+                <div>
+                    <label for="high">High</label>
+                    <input type="radio" id="high" name="priority" value="high">
+                </div>
+            </fieldset> 
+        </form>
+    </body>
+</html>
