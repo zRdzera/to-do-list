@@ -5,39 +5,35 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Tododoo app</title>
 
+        <!-- TAB ICON -->
         <link rel="icon" href="assets/todo-icon.png">
-        <script type="module" src="../src/index.js"></script>
+
+        <!-- JS -->
+        <script type="module" src="../src/app-logic/index.js"></script>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <form action="" id="form-new-task">
-            <div>
-                <label for="title-input">Title</label>
-                <input type="text" id="title-input" required>
-            </div>
-            <div>
-                <label for="due-date-input">Due date</label>
-                <input type="text" id="due-date-input">
-            </div>
-            <div>
-                <label for="description-input">Description</label>
-                <input type="date" id="description-input">
-            </div>
-            <fieldset>
-                <legend>Priority</legend>
+        <!-- <button popovertarget="mypopover">Toggle the popover</button>
+        <div id="mypopover" popover>Popover content</div> -->
 
-                <div>
-                    <label for="low">Low</label>
-                    <input type="radio" id="low" name="priority" value="low">
-                </div>
-                <div>
-                    <label for="medium">Medium</label>
-                    <input type="radio" id="medium" name="priority" value="medium">
-                </div>
-                <div>
-                    <label for="high">High</label>
-                    <input type="radio" id="high" name="priority" value="high">
-                </div>
-            </fieldset> 
-        </form>
+        <header id="todo-header">
+            <h1>Tododoo</h1>
+        </header>
+
+        <aside id="aside-navigation">
+            <button id="today-todo-button">Today</button>
+            <button id="week-todo-button">This Week</button>
+
+            <div id="user-projects">
+                <button id="user-projects-button">My projects</button>
+                <button id="add-new-project">Add project</button>
+                <div id="list-projects-user"></div>
+            </div>
+        </aside>
+
+        <div id="main-content"></div>
+
     </body>
 </html>
