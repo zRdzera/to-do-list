@@ -1,0 +1,33 @@
+/* ===== Default css ===== */
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    scroll-behavior: smooth;
+}
+
+/* ===== Form to add a new Project ===== */
+#form-add-project button {
+    cursor: pointer;
+    width: 2.4rem;
+    height: 2.4rem;
+    outline: none;
+    border: none;
+    background: transparent;
+}
+
+#form-add-project button {
+    filter: brightness(250%);
+    transition: filter 400ms;
+}
+
+#form-add-project button:hover {
+    filter: none;
+}
