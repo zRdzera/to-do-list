@@ -9,26 +9,31 @@
         <link rel="icon" href="assets/todo-icon.png">
 
         <!-- JS -->
-        <script type="module" src="../src/app-logic/index.js"></script>
+        <script type="module" src="/src/app-logic/index.js"></script>
 
         <!-- CSS -->
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <!-- <button popovertarget="mypopover">Toggle the popover</button>
-        <div id="mypopover" popover>Popover content</div> -->
-
         <header id="todo-header">
-            <h1>Tododoo</h1>
+            <button id="hamburguer-menu-button" type="button">
+                <img src="./assets/hamburguer.svg" alt="">
+            </button>
+            <button id="home-button" type="button">
+                <img src="./assets/home-icon.svg" alt="Home icon">
+            </button>
+            <input type="text" id="search-input" placeholder="Search">
         </header>
 
         <aside id="aside-navigation">
-            <button id="today-todo-button">Today</button>
-            <button id="week-todo-button">This Week</button>
+            <button id="today-todo-button" type="button">Today</button>
+            <button id="week-todo-button" type="button">This Week</button>
 
             <div id="user-projects">
-                <button id="user-projects-button">My projects</button>
-                <button id="add-new-project">Add project</button>
+                <button id="user-projects-button" type="button">My projects</button>
+                <button id="add-new-project" type="button">
+                    <img src="./assets/plus-icon.svg" alt="Plus icon">
+                </button>
                 <div id="list-projects-user"></div>
             </div>
         </aside>
