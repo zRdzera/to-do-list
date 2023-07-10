@@ -1,5 +1,4 @@
-import { cancelTaskHandler, createTaskHandler } from "../app-logic/taskCreationHandler.js";
-import { divCreator, buttonCreator } from "../commonFunctions.js";
+import { divCreator, buttonCreator, errorFieldCreator } from "../commonFunctions.js";
 
 export default function createNewTaskForm(){
     const form = document.createElement('form');
@@ -14,16 +13,13 @@ export default function createNewTaskForm(){
     const fieldsetPrioritiesLegend = document.createElement('legend');
     fieldsetPrioritiesLegend.textContent = 'Priority';
     
+    // Default value for priority
+    const divNoPriority = divCreator('No priority', 'no-priority', 'radio', 'priority');
+    divNoPriority.lastChild.setAttribute('checked', '');
+
     const divPriorityLow = divCreator('Low', 'low', 'radio', 'priority');
     const divPriorityMedium = divCreator('Medium', 'medium', 'radio', 'priority');
     const divPriorityHigh = divCreator('High', 'high', 'radio', 'priority');
-
-    fieldsetPriorities.append(
-        fieldsetPrioritiesLegend, 
-        divPriorityLow, 
-        divPriorityMedium, 
-        divPriorityHigh
-    );
 
     // Form buttons (Add task and Cancel)
     const divButtons = document.createElement('div');
@@ -34,6 +30,14 @@ export default function createNewTaskForm(){
 
     const cancelButton = buttonCreator('Cancel', 'cancel-task', 'button');
     cancelButton.addEventListener('click', () => cancelTaskHandler(form));
+
+    fieldsetPriorities.append(
+        fieldsetPrioritiesLegend,
+        divNoPriority,
+        divPriorityLow, 
+        divPriorityMedium, 
+        divPriorityHigh
+    );
     
     divButtons.append(
         submitButton,
@@ -49,4 +53,21 @@ export default function createNewTaskForm(){
     )
 
     return form;
+}
+
+// If user clicks on the add task button, the info that comes from the form is handled
+function createTaskHandler(form){
+    const formData = new FormData(form);
+
+    if(!formData.get('title')){
+        errorFieldCreator(document.getElementById('title-input').parentElement);
+    }
+    else {
+        form.style.cssText = 'display: none';
+    }
+}
+
+// If user clicks on the cancel button, the form for the new task is closed
+function cancelTaskHandler(form){
+    // form.style.cssText = 'display: none';
 }

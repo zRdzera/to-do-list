@@ -13,7 +13,31 @@ html {
     scroll-behavior: smooth;
 }
 
-/* ===== Form to add a new Project ===== */
+#todo-header {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    height: 5vh;
+    padding: 1rem;
+    background-color: bisque;
+}
+
+#hamburguer-menu-button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    /* width: 3.2rem;
+    height: 3.2rem; */
+}
+
+/* ===== Styles related to the new Project form ===== */
+button#add-new-project {
+    width: 3.2rem;
+    height: 3.2rem;
+    border: none;
+    outline: none;
+}
+
 #form-add-project button {
     cursor: pointer;
     width: 2.4rem;
