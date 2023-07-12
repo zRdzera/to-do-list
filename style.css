@@ -6,6 +6,12 @@ html {
     --roboto: 'Roboto', 'Franklin Gothic Medium', 'Arial Narrow', sans-serif;
 }
 
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 *,
 *::before,
 *::after {
@@ -15,7 +21,38 @@ html {
     scroll-behavior: smooth;
 }
 
-            /* ===== HEADER STYLES ===== */
+/* Used to change user's projects arrow direction */
+@keyframes projectsButtonChangingDirection {
+    0% {
+        transform: rotate(-15deg);
+    }
+
+    15% {
+        opacity: 0.3;
+    }
+
+    25% {
+        opacity: 0.5;
+        transform: rotate(-30deg);
+    }
+
+    50% {
+        opacity: 0.7;
+        transform: rotate(-50deg);
+    }
+
+    75% {
+        opacity: 0.9;
+        transform: rotate(-70deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: rotate(-90deg);
+    }
+}
+
+            /* ========== HEADER STYLES ========== */
 #todo-header {
     display: flex;
     align-items: center;
@@ -50,7 +87,7 @@ html {
     border-radius: 0.5rem;
     padding-left: 3.5rem;
     height: 3.2rem;
-    background: url(./assets/lupe-icon.svg) no-repeat 0.5rem center;
+    background: url(./assets/header-icons/lupe-icon.svg) no-repeat 0.5rem center;
     background-color: #db7167;
     font-family: var(--roboto);
     color: white;
@@ -68,14 +105,148 @@ html {
     color: transparent;
 }
 
-            /* ===== ASIDE STYLES ===== */
-/* Button to open the new project form */
-button#add-new-project {
-    width: 3.2rem;
-    height: 3.2rem;
+            /* ========== ASIDE STYLES ========== */
+#aside-navigation {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+    width: 20vw;
+    height: 100%;
+    padding: 3rem 1rem 1rem 3rem;
+    overflow-y: auto;
+    background-color: #db71672c;
+}
+
+/* Default style of all buttons inside #aside-navigation */
+#aside-navigation > button, 
+#create-and-list-user-projects > button,
+.project-name-and-tasks button {
+    display: flex;
+    column-gap: 1.2rem;
+    align-items: center;
     border: none;
     outline: none;
+    cursor: pointer;
     background: transparent;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    font-size: 1.6rem;
+    font-family: var(--roboto);
+    transition: all 150ms;
+}
+
+/* Today and this week buttons */
+#aside-navigation > button :first-child {
+    order: 1;
+}
+
+#aside-navigation > button :last-child {
+    filter: opacity(60%);
+    transition: filter 150ms;
+}
+
+#aside-navigation > button:hover {
+    background-color: rgb(218, 218, 218);
+}
+
+#aside-navigation > button:hover :last-child {
+    filter: none;
+}
+
+#aside-navigation > button:active {
+    scale: 0.9;
+}
+
+#aside-navigation > button:last-of-type {
+    margin-bottom: 2rem;
+}
+
+/* My projects button --- open the user's project list */
+#user-projects {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+}
+
+#create-and-list-user-projects {
+    display: flex;
+    justify-content: space-between;
+    transition: all 150ms;
+}
+
+#create-and-list-user-projects:hover {
+    border-radius: 0.5rem;
+    background-color: rgb(218, 218, 218);
+}
+
+#user-projects-button :first-child {
+    font-weight: bold;
+    order: 1;
+}
+
+/* Button to open the new project form */
+#create-and-list-user-projects #add-new-project-button {
+    filter: invert(0.6);
+}
+
+#create-and-list-user-projects #add-new-project-button:hover {
+    filter: none;
+}
+
+#add-new-project-button:active {
+    scale: 0.9;
+}
+
+#add-new-project-button img {
+    vertical-align: middle;
+}
+
+/* ========== Form that opens to add a new project ========== */
+#form-add-project {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    font-size: 1.4rem;
+    font-family: var(--roboto);
+}
+
+#form-add-project:hover {
+    background-color: rgb(218, 218, 218);
+}
+
+#form-add-project > div:first-of-type {
+    flex-grow: 2;
+}
+
+#form-add-project > div:first-of-type input#project-name {
+    width: 100%;
+    border: none;
+    flex-grow: 2;
+    font-size: 1.2rem;
+    font-family: var(--roboto);
+    padding: 0.8rem;
+}
+
+#form-add-project > div:first-of-type input#project-name:focus {
+    outline: 1px solid #ff5242;
+}
+
+#form-add-project > div:first-of-type input#project-name:focus::placeholder {
+    color: transparent;
+}
+
+#form-add-project > div:last-of-type {
+    align-self: center;
+    display: flex;
+    column-gap: 0.2rem;
+}
+
+#form-add-project > div:last-of-type button img {
+    vertical-align: middle;
 }
 
 /* Buttons inside the new project form */
@@ -88,9 +259,28 @@ button#add-new-project {
 
 #form-add-project button {
     filter: brightness(250%);
-    transition: filter 400ms;
+    transition: filter 300ms;
 }
 
 #form-add-project button:hover {
     filter: none;
+}
+
+/* ========== Section of user's projects  ========== */
+#list-projects-user {
+    margin-left: 2rem;
+}
+
+.project {
+    font-size: 1.4rem !important;
+}
+
+.project:hover {
+    background-color: rgb(218, 218, 218);
+}
+
+@media (max-width: 1366px) {
+    #aside-navigation {
+        width: 23vw;
+    }
 }
