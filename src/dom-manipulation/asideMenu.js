@@ -1,4 +1,4 @@
-export function openCloseAside(){
+export default function openCloseAside(){
     const hamburguerMenu = document.getElementById('hamburguer-menu-button');
     hamburguerMenu.addEventListener('click', () => {
         const currentClass = hamburguerMenu.getAttribute('class');
@@ -16,10 +16,10 @@ export function openCloseAside(){
 
 function showAside(){
     const aside = document.getElementById('aside-navigation');
-    aside.style.cssText = 'display: none;';
+    aside.style.cssText = 'display: flex;';
 }
 
 function hideAside(){
     const aside = document.getElementById('aside-navigation');
-    aside.style.cssText = 'display: flex; flex-direction: column';
+    aside.style.cssText = 'display: none;';
 }

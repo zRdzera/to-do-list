@@ -22,24 +22,47 @@
     <body>
         <header id="todo-header">
             <button id="hamburguer-menu-button" class="show" type="button">
-                <img src="./assets/hamburguer.svg" alt="Hamburguer menu icon">
+                <img src="./assets/header-icons/hamburguer.svg" alt="Hamburguer menu icon">
             </button>
             <button id="home-button" type="button">
-                <img src="./assets/home-icon.svg" alt="Home icon">
+                <img src="./assets/header-icons/home-icon.svg" alt="Home icon">
             </button>
             <input type="text" id="search-input" placeholder="Search">
         </header>
 
         <aside id="aside-navigation">
-            <button id="today-todo-button" type="button">Today</button>
-            <button id="week-todo-button" type="button">This Week</button>
+            <button id="today-todo-button" type="button">
+                <p>Today</p>
+                <img src="./assets/aside-icons/today-icon.png" alt="Today icon">
+            </button>
+            <button id="week-todo-button" type="button">
+                <p>This Week</p>
+                <img src="./assets/aside-icons/week-icon.png" alt="Week icon">
+            </button>
 
             <div id="user-projects">
-                <button id="user-projects-button" type="button">My projects</button>
-                <button id="add-new-project" type="button">
-                    <img src="./assets/plus-icon.svg" alt="Plus icon">
-                </button>
-                <div id="list-projects-user"></div>
+                <div id="create-and-list-user-projects">
+                    <button id="user-projects-button" class="show" type="button">
+                        <p>My projects</p>
+                        <img src="./assets/aside-icons/arrow-down-icon-26.png" alt="Arrow down icon">
+                    </button>
+                    <button id="add-new-project-button" type="button">
+                        <img src="./assets/aside-icons/plus-icon.svg" alt="Plus icon">
+                    </button>
+                </div>
+
+                <div id="list-projects-user">
+                    <!-- Example of a div with tasks inside -->
+                    <div id="project-1(EX.)" class="project-name-and-tasks"> 
+                        <button class="project show" type="button">
+                            <img src="./assets/aside-icons/arrow-down-icon-22.png" alt="Arrow down icon">
+                            <p>This is just a project name!</p>
+                        </button>
+                        <div class="project-tasks">
+                            <div>This is a task!</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </aside>
 

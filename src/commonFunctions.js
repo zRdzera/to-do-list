@@ -1,10 +1,22 @@
-export function errorFieldCreator(elementToAppend){
-    const p = document.createElement('p');
-    p.textContent = 'You need to fill this field!';
-    p.style.cssText = 'width: max-content; font-size: 12px';
+export function errorFieldCreator(elementToAppendBelow){
+    // Don't allow to create a lot of error advises
+    if(elementToAppendBelow.nextElementSibling)
+        return;
 
-    elementToAppend.appendChild(p);
-    setTimeout(() => elementToAppend.removeChild(p), 1000);
+    const errorField = document.createElement('p');
+    errorField.textContent = 'You need to fill this field!';
+    errorField.style.cssText = 
+        `width: max-content; 
+        font-size: 11px; 
+        position: absolute;
+        margin-top: 8px;
+        margin-left: 5px`;
+
+    const parent = elementToAppendBelow.parentElement;
+    parent.style.cssText = 'position: relative;'
+    parent.appendChild(errorField);
+
+    setTimeout(() => parent.removeChild(errorField), 1500);
 }
 
 export function buttonCreator(buttonText, buttonId, buttonType){

@@ -60,7 +60,7 @@ function createTaskHandler(form){
     const formData = new FormData(form);
 
     if(!formData.get('title')){
-        errorFieldCreator(document.getElementById('title-input').parentElement);
+        errorFieldCreator(document.getElementById('title-input'));
     }
     else {
         form.style.cssText = 'display: none';

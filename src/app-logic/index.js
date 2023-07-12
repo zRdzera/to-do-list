@@ -1,10 +1,11 @@
 import createForm from "../dom-manipulation/createNewTask.js";
 import { default as project } from "./project.js";
 import { default as task } from "./task.js";
-import { default as setEventListenerNewProject } from "../dom-manipulation/createNewProject.js";
-import { openCloseAside } from "../dom-manipulation/asideMenu.js";
+import { default as openCloseAside } from "../dom-manipulation/asideMenu.js";
+import { default as userProjectsHandler } from "../dom-manipulation/userProjectSection.js";
 
-setEventListenerNewProject();
+openCloseAside();
+userProjectsHandler();
 
 const defaultProject = (() => project('Home'))();
 const defaultTask = (
@@ -12,6 +13,6 @@ const defaultTask = (
 )();
 
 // Used for tests
-const form = createForm();
-const body = document.getElementsByTagName('body')[0];
-body.appendChild(form);
+// const form = createForm();
+// const body = document.getElementsByTagName('body')[0];
+// body.appendChild(form);
