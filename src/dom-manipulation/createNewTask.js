@@ -1,5 +1,6 @@
 import { divCreator, buttonCreator, errorFieldCreator } from "../commonFunctions.js";
 
+// Function to generate a form to create a new task, inside an existent project
 export default function createNewTaskForm(){
     const form = document.createElement('form');
     form.setAttribute('id', 'form-new-task');
@@ -53,6 +54,27 @@ export default function createNewTaskForm(){
     )
 
     return form;
+}
+
+// Function that comes in handy to create elements that goes inside the form for a new task
+function divCreator(labelText, inputId, inputType, inputName){
+    const divWrapper = document.createElement('div');
+
+    const label = document.createElement('label');
+    label.setAttribute('for', `${inputId}`);
+    label.textContent = labelText;
+
+    const input = document.createElement('input');
+    input.setAttribute('type', `${inputType}`);
+    input.setAttribute('id', `${inputId}`);
+    input.setAttribute('name', `${inputName}`);
+
+    if(input.type === 'radio')
+        input.setAttribute('value', `${inputId}`);
+
+    divWrapper.append(label, input);
+
+    return divWrapper;
 }
 
 // If user clicks on the add task button, the info that comes from the form is handled

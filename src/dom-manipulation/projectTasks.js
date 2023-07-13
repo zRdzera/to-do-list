@@ -1,13 +1,19 @@
-export function newProjectButtonListener(button){
-    button.addEventListener('click', () => openCloseProjectTasks(button));
+// Expand a project in the main-content div (not yet implemented)
+export function expandProjectTasks(buttonThatTriggered){
+    const outerParent = buttonThatTriggered.parentElement.parentElement;
+    const listOfTasks = outerParent.querySelectorAll('.project-tasks');
+
+    console.log(listOfTasks);
 }
 
+// Handle show/hide tasks of a project, by clicking in the project div
 export function openCloseProjectTasks(projectButton){
     const iconInsideButton = projectButton.getElementsByTagName('img')[0];
     
-    const buttonClasses = projectButton.getAttribute('class').split(' ');
-    const permanentClass = buttonClasses[0];
-    const changeableClass = buttonClasses[1];
+    // Mantain default class that's used for button styling
+    const divClasses = projectButton.getAttribute('class').split(' ');
+    const permanentClass = divClasses[0];
+    const changeableClass = divClasses[1];
 
     if(changeableClass === 'show'){
         projectButton.setAttribute('class', `${permanentClass} hide`);

@@ -28,23 +28,3 @@ export function buttonCreator(buttonText, buttonId, buttonType){
 
     return button;
 }
-
-export function divCreator(labelText, inputId, inputType, inputName){
-    const divWrapper = document.createElement('div');
-
-    const label = document.createElement('label');
-    label.setAttribute('for', `${inputId}`);
-    label.textContent = labelText;
-
-    const input = document.createElement('input');
-    input.setAttribute('type', `${inputType}`);
-    input.setAttribute('id', `${inputId}`);
-    input.setAttribute('name', `${inputName}`);
-
-    if(input.type === 'radio')
-        input.setAttribute('value', `${inputId}`);
-
-    divWrapper.append(label, input);
-
-    return divWrapper;
-}
