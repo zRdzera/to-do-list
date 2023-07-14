@@ -1,4 +1,4 @@
-import { divCreator, buttonCreator, errorFieldCreator } from "../commonFunctions.js";
+import { buttonCreator, errorFieldCreator } from "../commonFunctions.js";
 
 // Function to generate a form to create a new task, inside an existent project
 export default function createNewTaskForm(){

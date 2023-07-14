@@ -4,9 +4,16 @@ const idGenerator = (function (){
     return () => index++;
 })();
 
-export default function Task(taskTitle, dueDate = 'none', description = 'none', priority = 'none'){
-    const _taskId = idGenerator();
-    let _title = taskTitle;
+export default function Task(taskName, dueDate = 'none', description = 'none', priority = 'none', taskId){
+    let _taskId;
+    
+    // Used to create an object based on an existent (JSON object that comes from storage to Task object)
+    if(taskId)
+        _taskId = taskId;
+    else
+        _taskId = idGenerator();
+
+    let _name = taskName;
     let _dueDate = dueDate;
     let _description = description;
     let _priority = priority;
@@ -15,8 +22,8 @@ export default function Task(taskTitle, dueDate = 'none', description = 'none', 
     const getTaskId = () => _taskId;
 
     // Getter and Setter for title
-    const getTitle = () => _title;
-    const setTitle = (newTitle) => _title = newTitle;
+    const getName = () => _name;
+    const setName = (newTitle) => _name = newTitle;
 
     // Getter and Setter for dueDate
     const getDueDate = () => _dueDate;
@@ -32,8 +39,8 @@ export default function Task(taskTitle, dueDate = 'none', description = 'none', 
 
     return {
         getTaskId,
-        getTitle,
-        setTitle,
+        getName,
+        setName,
         getDueDate,
         setDueDate,
         getDescription,

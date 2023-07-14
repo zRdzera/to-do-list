@@ -4,7 +4,7 @@ import { default as task } from "./task.js";
 import { default as openCloseAside } from "../dom-manipulation/asideMenu.js";
 import * as startListenersProjectsSection from "../dom-manipulation/userProjectSection.js";
 import { createProjectElement } from "../dom-manipulation/createNewProject.js";
-import { default as storeProject } from "./storage.js";
+import { default as storeProject } from "./projectStorage.js";
 
 openCloseAside();
 // userProjectsHandler();
@@ -13,7 +13,7 @@ openCloseAside();
 const defaultProject = project('Work');
 const defaultProject2 = project('Workzada');
 const defaultTask = (
-    () => task('This Task', '2023-09-09', 'This is a description', 'high')
+    () => task('This Task', '2023-09-09', undefined, 'high')
 )();
 const defaultTask2 = (
     () => task('This Taskzinha', '2023-09-09', 'This is a description', 'high')
@@ -25,6 +25,6 @@ defaultProject.addTaskToProject(defaultTask2);
 storeProject(defaultProject);
 storeProject(defaultProject2);
 
-// const dom = createProjectElement(defaultProject);
-// createProjectElement(defaultProject2);
+createProjectElement(defaultProject);
+createProjectElement(defaultProject2);
 // console.log(dom);

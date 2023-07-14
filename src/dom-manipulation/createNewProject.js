@@ -1,5 +1,7 @@
 import Project from "../app-logic/project.js";
-import { buttonCreator, errorFieldCreator } from "../commonFunctions.js";
+import storeProject from "../app-logic/projectStorage.js";
+import { buttonCreator, createElement, errorFieldCreator } from "../commonFunctions.js";
+import { expandProjectTasks, openCloseProjectTasks } from "./projectWithTasks.js";
 
 // Function to generate a form to create a new project
 export default function createNewProjectForm(buttonNewProject){
@@ -67,7 +69,7 @@ export function createProjectElement(projectObject){
         const singleTaskWrapper = createElement('div', {
             elementClass: 'task-aside', 
             elementId: `${element.getTaskId()}`,
-            elementText: element.getTitle()
+            elementText: element.getName()
         });
         
         return singleTaskWrapper;
@@ -98,28 +100,7 @@ export function newProjectButtonListener(buttonShowHide, buttonExpand){
     });
 }
 
-// Function that comes in handy to create elements that goes inside a project
-function createElement(tagName, ...rest){
-    const restParameters = rest[0]; // Need this because it comes as an array
-    const {elementClass, elementId, elementSrc, elementText} = restParameters;
-    const element = document.createElement(`${tagName}`);
-
-    if(elementId)
-        element.setAttribute('id', `${elementId}`);
-
-    if(elementClass)
-        element.setAttribute('class', `${elementClass}`);
-
-    if(elementSrc)
-        element.src = elementSrc;
-
-    if(elementText)
-        element.textContent = elementText;
-
-    return element;
-}
-
-// Check if the project title input is filled, and create a new project
+// Check if the project title input is filled, and create a new project (HTML and Storage)
 function createProjectHandler(form, buttonNewProject){
     const formData = new FormData(form);
 
@@ -131,6 +112,7 @@ function createProjectHandler(form, buttonNewProject){
         buttonNewProject.style.cssText = 'opacity: 1';
         const project = Project(formData.get('project_name'));
         createProjectElement(project);
+        storeProject(project);
     }
 }
 

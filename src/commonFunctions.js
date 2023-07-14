@@ -28,3 +28,24 @@ export function buttonCreator(buttonText, buttonId, buttonType){
 
     return button;
 }
+
+// Function that comes in handy to create elements that goes inside a project
+export function createElement(tagName, ...rest){
+    const restParameters = rest[0]; // Need this because it comes as an array
+    const {elementClass, elementId, elementSrc, elementText} = restParameters;
+    const element = document.createElement(`${tagName}`);
+
+    if(elementId)
+        element.setAttribute('id', `${elementId}`);
+
+    if(elementClass)
+        element.setAttribute('class', `${elementClass}`);
+
+    if(elementSrc)
+        element.src = elementSrc;
+
+    if(elementText)
+        element.textContent = elementText;
+
+    return element;
+}

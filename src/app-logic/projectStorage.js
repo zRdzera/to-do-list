@@ -12,15 +12,20 @@ export default function storeProject(project){
     localStorage.setItem('projects-list', JSON.stringify(projectsStorage));
 }
 
+export function getProjectById(id){
+    const storedProjects = getProjectListStorage();
+    return storedProjects.find(project => project._projectId === Number.parseInt(id));
+}
+
 // Check if the project to be stored already exists in the storage
 function checkIfProjectExists(projectId){
     const storedProjects = getProjectListStorage();
-    const allowSave = storedProjects.every(project => project.project_id !== projectId);
+    const allowSave = storedProjects.every(project => project._projectId !== projectId);
     
     return allowSave;
 }
 
-// Retrieve user's projects storage. If is user's first time, create a new list of projects
+// Retrieve user's projects storage. If it is user's first time using the tododoo, create a new list of projects
 function getProjectListStorage(){
     if(!localStorage.getItem('projects-list')){
         localStorage.setItem('projects-list', JSON.stringify([]));
@@ -31,20 +36,20 @@ function getProjectListStorage(){
 
 // Transform project object (that contains all functions) to a JSON object
 function projectToJson(project){
-    const project_id = project.getProjectId();
-    const name = project.getTitle();
-    const task_list = [];
+    const _projectId = project.getProjectId();
+    const _title = project.getTitle();
+    const _listOfTasks = [];
    
     // Convert all tasks to JSON like objects
     Array.from(project.getAllTasks())
         .forEach(
-            task => task_list.push(taskToJson(task))
+            task => _listOfTasks.push(taskToJson(task))
         );
 
     return {
-        project_id,
-        name,
-        task_list
+        _projectId,
+        _title,
+        _listOfTasks
     }
 }
 
@@ -53,12 +58,14 @@ to be properly stored in the localStorage together with corresponding project */
 function taskToJson(task){
     const id = task.getTaskId();
     const name = task.getTitle();
+    const description = task.getDescription();
     const due_date = task.getDueDate();
     const priority = task.getPriority();
 
     return {
         id,
         name,
+        description,
         due_date,
         priority
     }
