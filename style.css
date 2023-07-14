@@ -8,8 +8,12 @@ html {
 
 body {
     height: 100vh;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: minmax(25rem, 35rem) 1fr;
+    grid-template-rows: max-content auto;
+    grid-template-areas:
+        "header header"
+        "aside main";
 }
 
 *,
@@ -57,8 +61,10 @@ body {
     display: flex;
     align-items: center;
     column-gap: 2.5rem;
-    padding: 1.4rem 5rem;
+    padding: 1.2rem 2rem;
     background-color: #de483a;
+    box-shadow: 0 0 1rem black;
+    grid-area: header;
 }
 
 #hamburguer-menu-button, #home-button {
@@ -107,16 +113,32 @@ body {
 
             /* ========== ASIDE STYLES ========== */
 #aside-navigation {
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    row-gap: 0.5rem;
-    width: 20vw;
-    height: 100%;
-    padding: 3rem 1rem 1rem 3rem;
+    padding: 3rem 2rem;
     overflow-y: auto;
     background-color: #db71672c;
+    grid-area: aside;
 }
+
+/* Need this to apply custom scrollbar */
+/* ::-webkit-scrollbar {
+    width: 20px;
+}
+
+#aside-navigation::-webkit-scrollbar-button:start:decrement,
+#aside-navigation::-webkit-scrollbar-button:start:increment {
+    border: 1px solid red;
+}
+
+#aside-navigation::-webkit-scrollbar-button:end:decrement,
+#aside-navigation::-webkit-scrollbar-button:end:increment {
+    border: 1px solid blue;
+}
+
+#aside-navigation::-webkit-scrollbar-thumb {
+    background: green;
+} */
 
 /* Default style of all buttons inside #aside-navigation */
 #aside-navigation > button, 
@@ -131,8 +153,9 @@ body {
     background: transparent;
     padding: 0.5rem;
     border-radius: 0.5rem;
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-family: var(--roboto);
+    font-weight: bold;
     transition: all 150ms;
 }
 
@@ -159,7 +182,7 @@ body {
 }
 
 #aside-navigation > button:last-of-type {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 /* ========== My projects button --- open the user's project list ========== */
@@ -278,6 +301,10 @@ body {
     flex-direction: column;
 }
 
+.project-name-and-tasks > div:first-of-type {
+    font-weight: normal;
+}
+
 .project-name-and-tasks .project {
     padding-right: 0.7rem !important;
     font-size: 1.4rem !important;
@@ -311,11 +338,100 @@ body {
     row-gap: 0.5rem;
 }
 
-@media (max-width: 1366px) {
-    #aside-navigation {
-        width: 23vw;
-    }
+            /* ========== MAIN CONTENT STYLES ========== */
+#main-content {
+    grid-area: main;
+    padding: 3rem 10rem;
+    overflow-y: auto;
+}
 
+#main-content .project-wrapper {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2rem;
+}
+
+#main-content .project-name {
+    font-family: var(--roboto);
+    font-size: 2.8rem;
+}
+
+#main-content .project-tasks {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#main-content .project-tasks .task {
+    padding: 1.4rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#main-content .project-tasks .task-left-side {
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+}
+
+.task .task-priority {
+    align-self: flex-start;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 1rem;
+}
+
+/* Task priority button colors */
+.none {
+    border: 1px solid black; 
+    filter: opacity(20%);
+}
+
+.high {
+    border: 1px solid red; 
+    filter: opacity(80%);
+}
+
+.low {
+    border: 1px solid blue; 
+    filter: opacity(80%);
+}
+
+.task .task-name-and-date {
+    display: flex;
+    flex-direction: column;
+    font-family: var(--roboto);
+    font-size: 1.4rem;
+}
+
+.task .task-due-date {
+    font-size: 1.1rem;
+}
+
+.project-wrapper .add-task {
+    border: none;
+    outline: none;
+    background: transparent;
+}
+
+.add-task {
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+    padding: 0 1.2rem;
+    cursor: pointer;
+    font-family: var(--roboto);
+    font-size: 1.4rem;
+    filter: opacity(60%);
+    transition: font-size 150ms;
+}
+
+.add-task:hover {
+    font-size: 1.5rem;
+    filter: none;
+}
+
+@media (max-width: 1366px) {
     #form-add-project {
         row-gap: 0.5rem;
         margin-bottom: 0;
