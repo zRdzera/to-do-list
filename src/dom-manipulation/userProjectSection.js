@@ -1,5 +1,5 @@
-import { default as createNewProjectForm } from "./createNewProject.js";
-import { expandProjectTasks, openCloseProjectTasks } from "./projectWithTasks.js";
+import { default as createNewProjectForm, openCloseProjectTasks  } from "./projectAside.js";
+import { expandProjectTasks } from "./projectMain.js";
 
 // IIFE to start all eventListeners related to the user-projects section (for projects stored previously)
 const startListenersProjectsSection = (function (){

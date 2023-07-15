@@ -57,7 +57,7 @@ function projectToJson(project){
 to be properly stored in the localStorage together with corresponding project */
 function taskToJson(task){
     const id = task.getTaskId();
-    const name = task.getTitle();
+    const name = task.getName();
     const description = task.getDescription();
     const due_date = task.getDueDate();
     const priority = task.getPriority();

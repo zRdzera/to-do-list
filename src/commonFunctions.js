@@ -19,13 +19,23 @@ export function errorFieldCreator(elementToAppendBelow){
     setTimeout(() => parent.removeChild(errorField), 1500);
 }
 
-export function buttonCreator(buttonText, buttonId, buttonType){
+// Handy function to create a button with an image inside (right-side of a task elements and add new task button)
+export function buttonWithImg(elementClass, imgSrc, optionalSpanText){
     const button = document.createElement('button');
-    
-    button.setAttribute('id', `${buttonId}`);
-    button.setAttribute('type', `${buttonType}`)
-    button.textContent = `${buttonText}`;
+    button.setAttribute('class', `${elementClass}`);
+    button.setAttribute('type', 'button');
 
+    const img = document.createElement('img');
+    img.src = `${imgSrc}`;
+
+    if(optionalSpanText){
+        const span = document.createElement('span');
+        span.textContent = `${optionalSpanText}`;
+        span.style.cssText = 'order: 2'; // change order of span, putting him after the img
+        button.appendChild(span);
+    }
+
+    button.appendChild(img);
     return button;
 }
 

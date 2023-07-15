@@ -1,4 +1,4 @@
-import { buttonCreator, errorFieldCreator } from "../commonFunctions.js";
+import { errorFieldCreator } from "../commonFunctions.js";
 
 // Function to generate a form to create a new task, inside an existent project
 export default function createNewTaskForm(){
@@ -26,10 +26,10 @@ export default function createNewTaskForm(){
     const divButtons = document.createElement('div');
     divButtons.setAttribute('id', 'form-buttons');
 
-    const submitButton = buttonCreator('Add Task', 'add-task', 'button');
+    const submitButton = buttonWithTextCreator('Add Task', 'add-task', 'button');
     submitButton.addEventListener('click', () => createTaskHandler(form));
 
-    const cancelButton = buttonCreator('Cancel', 'cancel-task', 'button');
+    const cancelButton = buttonWithTextCreator('Cancel', 'cancel-task', 'button');
     cancelButton.addEventListener('click', () => cancelTaskHandler(form));
 
     fieldsetPriorities.append(
@@ -54,6 +54,22 @@ export default function createNewTaskForm(){
     )
 
     return form;
+}
+
+// Function to create a task element for the aside section
+function createTaskElement(){
+    
+}
+
+// Handy function to create a button with a text
+function buttonWithTextCreator(buttonText, buttonId, buttonType){
+    const button = document.createElement('button');
+    
+    button.setAttribute('id', `${buttonId}`);
+    button.setAttribute('type', `${buttonType}`)
+    button.textContent = `${buttonText}`;
+
+    return button;
 }
 
 // Function that comes in handy to create elements that goes inside the form for a new task
