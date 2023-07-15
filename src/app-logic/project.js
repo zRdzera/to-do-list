@@ -1,6 +1,6 @@
 import Task from "./task.js";
 
-// Used to generate unique identifier for a project
+// Used to generate unique identifier for a project (Still need to figure it out how the id will be correctly generated)
 const idGenerator = (function (){
     let index = 0;
     return () => index++;

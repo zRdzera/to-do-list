@@ -1,5 +1,5 @@
 // Add a new created project to the project-list JSON object stored
-export default function storeProject(project){
+export default function saveProject(project){
     const allowSave = checkIfProjectExists(project.getProjectId());
 
     if(allowSave === false) // If the above function returns false, the project will not be stored
@@ -8,6 +8,19 @@ export default function storeProject(project){
     const jsonProject = projectToJson(project);
     const projectsStorage = getProjectListStorage();
     projectsStorage.push(jsonProject);
+
+    localStorage.setItem('projects-list', JSON.stringify(projectsStorage));
+}
+
+// Change some part of an existent project
+export function alterExistentProject(project){
+    const jsonProject = projectToJson(project);
+    const projectsStorage = getProjectListStorage();
+
+    const indexOfProjectToAlter = Array.from(projectsStorage)
+        .findIndex(storedProject => storedProject._projectId === project.getProjectId());
+
+    projectsStorage[indexOfProjectToAlter] = jsonProject;
 
     localStorage.setItem('projects-list', JSON.stringify(projectsStorage));
 }

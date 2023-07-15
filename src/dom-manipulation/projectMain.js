@@ -11,7 +11,7 @@ export function expandProjectTasks(buttonThatTriggered){
     // Checks if the project exists
     const project = getProjectById(projectId);
     if(project){
-        const projectObject = Project(project); // If projects exists, create a new object based on him, to be able to manipulate
+        const projectObject = Project(project); // If projects exists, create a "new" object based on him, to be able to manipulate
         
         // Append the project expanded from aside and display it in the #main-content element
         const mainContentDiv = document.getElementById('main-content');
@@ -38,7 +38,7 @@ function createProjectMain(project){
     
     // Button to add a new task to the project
     const newTaskButton = buttonWithImg('add-task', '/dist/assets/main-icons/plus-icon-task-add.svg', 'Add new task');
-    newTaskButton.addEventListener('click', () => console.log(createNewTaskForm()));
+    newTaskButton.addEventListener('click', () => createNewTaskForm(newTaskButton));
 
     // Append all elements to the project wrapper (hold all tasks and infos of a single project)
     projectWrapper.append(projectNameH3, projectTasksWrapper, newTaskButton);

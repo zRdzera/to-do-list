@@ -1,4 +1,4 @@
-// Used to generate unique identifier for a task
+// Used to generate unique identifier for a task (Still need to figure it out how the id will be correctly generated)
 const idGenerator = (function (){
     let index = 0;
     return () => index++;

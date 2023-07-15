@@ -1,5 +1,5 @@
 import Project from "../app-logic/project.js";
-import storeProject from "../app-logic/projectStorage.js";
+import saveProject from "../app-logic/projectStorage.js";
 import { buttonWithImg, createElement, errorFieldCreator } from "../commonFunctions.js";
 import { expandProjectTasks } from "./projectMain.js";
 
@@ -26,7 +26,7 @@ export default function createNewProjectForm(buttonNewProject){
 
     // Button to cancel the creation of a new project
     const cancelButton = buttonWithImg('cancel-project-button', '/dist/assets/aside-icons/cancel-icon.svg');
-    cancelButton.addEventListener('click', () => cancelProjectHandler(formWrapper, buttonNewProject));
+    cancelButton.addEventListener('click', () => removeProjectForm(formWrapper, buttonNewProject));
 
     // Wrapper for cancel and create project buttons
     const buttonsWrapper = document.createElement('div');
@@ -39,6 +39,28 @@ export default function createNewProjectForm(buttonNewProject){
     
     // parentOfParent.lastElementChild is the element used as a reference, to use insertBefore
     parentOfParent.insertBefore(formWrapper, parentOfParent.lastElementChild);
+}
+
+// Check if the project title input is filled, and create a new project (HTML and Storage)
+function createProjectHandler(form, buttonNewProject){
+    const formData = new FormData(form);
+
+    if(!formData.get('project_name')){
+        errorFieldCreator(document.getElementById('project-name'));
+    }
+    else {
+        removeProjectForm(form, buttonNewProject);
+        const project = Project(formData.get('project_name'));
+        createProjectElement(project);
+        saveProject(project);
+    }
+}
+
+// Remove new project form and shows the 'plus' button again
+function removeProjectForm(form, buttonNewProject){
+    const parentElement = form.parentElement;
+    parentElement.removeChild(form);
+    buttonNewProject.style.cssText = 'opacity: 1';
 }
 
 // Function used to create an HTML element for a new created project ()
@@ -142,27 +164,4 @@ export function openCloseProjectTasks(projectButton){
         const tasksOfProject = parentProject.lastElementChild;
         tasksOfProject.style.cssText = 'display: flex;';
     }
-}
-
-// Check if the project title input is filled, and create a new project (HTML and Storage)
-function createProjectHandler(form, buttonNewProject){
-    const formData = new FormData(form);
-
-    if(!formData.get('project_name')){
-        errorFieldCreator(document.getElementById('project-name'));
-    }
-    else {
-        form.style.cssText = 'display: none';
-        buttonNewProject.style.cssText = 'opacity: 1';
-        const project = Project(formData.get('project_name'));
-        createProjectElement(project);
-        storeProject(project);
-    }
-}
-
-// Remove new project form and shows the 'plus' button again
-function cancelProjectHandler(form, buttonNewProject){
-    const parentElement = form.parentElement;
-    parentElement.removeChild(form);
-    buttonNewProject.style.cssText = 'opacity: 1';
 }

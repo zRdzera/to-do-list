@@ -1,11 +1,14 @@
-import { errorFieldCreator } from "../commonFunctions.js";
+import Project from "../app-logic/project.js";
+import saveProject, { alterExistentProject, getProjectById } from "../app-logic/projectStorage.js";
+import Task from "../app-logic/task.js";
+import { createElement, errorFieldCreator } from "../commonFunctions.js";
 
 // Function to generate a form to create a new task, inside an existent project
-export default function createNewTaskForm(){
+export default function createNewTaskForm(buttonNewTask){
     const form = document.createElement('form');
     form.setAttribute('id', 'form-new-task');
     
-    const divTitle = divCreator('Title', 'title-input', 'text', 'title');
+    const divTitle = divCreator('Title', 'task-name', 'text', 'task_name');
     const divDueDate = divCreator('Due date', 'due-date-input', 'date', 'due_date');
     const divDescription = divCreator('Description', 'description-input', 'text', 'description');
    
@@ -19,7 +22,6 @@ export default function createNewTaskForm(){
     divNoPriority.lastChild.setAttribute('checked', '');
 
     const divPriorityLow = divCreator('Low', 'low', 'radio', 'priority');
-    const divPriorityMedium = divCreator('Medium', 'medium', 'radio', 'priority');
     const divPriorityHigh = divCreator('High', 'high', 'radio', 'priority');
 
     // Form buttons (Add task and Cancel)
@@ -27,7 +29,7 @@ export default function createNewTaskForm(){
     divButtons.setAttribute('id', 'form-buttons');
 
     const submitButton = buttonWithTextCreator('Add Task', 'add-task', 'button');
-    submitButton.addEventListener('click', () => createTaskHandler(form));
+    submitButton.addEventListener('click', () => createTaskHandler(form, buttonNewTask));
 
     const cancelButton = buttonWithTextCreator('Cancel', 'cancel-task', 'button');
     cancelButton.addEventListener('click', () => cancelTaskHandler(form));
@@ -35,8 +37,7 @@ export default function createNewTaskForm(){
     fieldsetPriorities.append(
         fieldsetPrioritiesLegend,
         divNoPriority,
-        divPriorityLow, 
-        divPriorityMedium, 
+        divPriorityLow,
         divPriorityHigh
     );
     
@@ -52,13 +53,54 @@ export default function createNewTaskForm(){
         fieldsetPriorities,
         divButtons
     )
+    
+    // Append the form to the main-content
+    const mainContentDiv = document.getElementById('main-content');
 
-    return form;
+    return mainContentDiv.appendChild(form);
 }
 
-// Function to create a task element for the aside section
-function createTaskElement(){
-    
+// If user clicks on the add task button, the info that comes from the form is handled
+function createTaskHandler(form, buttonNewTask){
+    const formData = new FormData(form);
+
+    if(!formData.get('task_name')){
+        errorFieldCreator(document.getElementById('title-input'));
+    }
+    else {
+        let parametersForNewTask = [];
+        formData.forEach((value, key) => {
+            if(value === '')
+                parametersForNewTask.push({[`${key}`]: undefined});
+            else
+                parametersForNewTask.push({[`${key}`]: value});
+        });
+
+        // Get all parameters from the new task form and create a new task object
+        let task_name, due_date, description, priority;
+        [{task_name}, {due_date}, {description}, {priority}] = parametersForNewTask;
+        const newTask = Task(task_name, due_date, description, priority);
+
+        const parentProjectId = buttonNewTask.parentElement.getAttribute('id');
+        addTaskToProject(newTask, parentProjectId);
+    }
+}
+
+// If user clicks on the cancel button, the form for the new task is closed
+function cancelTaskHandler(form){
+    const parentElement = form.parentElement;
+    parentElement.removeChild(form);
+}
+
+// Get project from storage and transform him in a project object to store the new task inside of it via the method addTaskToProject()
+function addTaskToProject(task, parentProjectId){
+    const projectFromStorage = getProjectById(parentProjectId);
+
+    if(projectFromStorage){
+        const projectObject = Project(projectFromStorage);
+        projectObject.addTaskToProject(task);
+        alterExistentProject(projectObject);
+    }
 }
 
 // Handy function to create a button with a text
@@ -91,21 +133,4 @@ function divCreator(labelText, inputId, inputType, inputName){
     divWrapper.append(label, input);
 
     return divWrapper;
-}
-
-// If user clicks on the add task button, the info that comes from the form is handled
-function createTaskHandler(form){
-    const formData = new FormData(form);
-
-    if(!formData.get('title')){
-        errorFieldCreator(document.getElementById('title-input'));
-    }
-    else {
-        form.style.cssText = 'display: none';
-    }
-}
-
-// If user clicks on the cancel button, the form for the new task is closed
-function cancelTaskHandler(form){
-    // form.style.cssText = 'display: none';
 }
