@@ -22,7 +22,7 @@ export default function createNewProjectForm(buttonNewProject){
 
     // Button to confirm the creation of a new project
     const addButton = buttonWithImg('create-project-button', '/dist/assets/aside-icons/selected-icon.svg');
-    addButton.addEventListener('click', () => createProjectHandler(formWrapper, buttonNewProject));
+    addButton.addEventListener('click', () => newProjectHandler(formWrapper, buttonNewProject));
 
     // Button to cancel the creation of a new project
     const cancelButton = buttonWithImg('cancel-project-button', '/dist/assets/aside-icons/cancel-icon.svg');
@@ -42,17 +42,17 @@ export default function createNewProjectForm(buttonNewProject){
 }
 
 // Check if the project title input is filled, and create a new project (HTML and Storage)
-function createProjectHandler(form, buttonNewProject){
+function newProjectHandler(form, buttonNewProject){
     const formData = new FormData(form);
 
     if(!formData.get('project_name')){
         errorFieldCreator(document.getElementById('project-name'));
     }
     else {
-        removeProjectForm(form, buttonNewProject);
         const project = Project(formData.get('project_name'));
-        createProjectElement(project);
+        createProjectAside(project);
         saveProject(project);
+        removeProjectForm(form, buttonNewProject);
     }
 }
 
@@ -64,7 +64,7 @@ function removeProjectForm(form, buttonNewProject){
 }
 
 // Function used to create an HTML element for a new created project ()
-export function createProjectElement(projectObject){
+export function createProjectAside(projectObject){
     const projectId = projectObject.getProjectId();
     const projectTitle = projectObject.getTitle();
     const projectTasks = projectObject.getAllTasks();
@@ -72,15 +72,7 @@ export function createProjectElement(projectObject){
     const arrowDownImage = createElement('img', {elementSrc: '/dist/assets/aside-icons/arrow-down-icon-22.png'});
     const buttonText = createElement('p', {elementText: `${projectTitle}`});
     const expandImage = createElement('img', {elementSrc: '/dist/assets/aside-icons/expand-icon.png', elementClass: 'expand-project-tasks'});
-    const allTasksElements = projectTasks.map(element => {
-        const singleTaskWrapper = createElement('div', {
-            elementClass: 'task-aside', 
-            elementId: `${element.getTaskId()}`,
-            elementText: element.getName()
-        });
-        
-        return singleTaskWrapper;
-    });
+    const allTasksElements = projectTasks.map(task => createTaskElementAside(task));
 
     // Wrap buttons to show/hide and expand project to a div
     const divButtonsProjectName = createElement('div', {elementClass: 'project show'});
@@ -92,22 +84,32 @@ export function createProjectElement(projectObject){
     // Buttons to show/hide and expand project
     divButtonsProjectName.append(arrowDownImage, buttonText, expandImage);
     
-    // Buttons to show/hide and expand project
-    divButtonsProjectName.append(arrowDownImage, buttonText, expandImage);
-    
     // Wrapper for all tasks of the current project
-    const allTasksWrapper = createElement('div', {elementClass: 'project-tasks'});
+    const allTasksWrapper = createElement('div', {elementClass: 'project-tasks-aside'});
     Array.from(allTasksElements)
         .forEach(element => allTasksWrapper.appendChild(element));
 
     // Append all elements to a div that wraps all the content of a project
-    const divWrapper = createElement('div', {elementClass: 'project-name-and-tasks', elementId: `${projectId}`});
+    const divWrapper = createElement('div', {elementClass: 'project-name-and-tasks', elementId: `aside_${projectId}`});
     divWrapper.append(divButtonsProjectName, allTasksWrapper);
 
     // Section that contains all user's projects
     const userProjectsSection = document.getElementById('list-projects-user');
 
     return userProjectsSection.appendChild(divWrapper);
+}
+
+export function createTaskElementAside(task){
+    const taskWrapperAside = createElement('div', {
+        elementClass: 'task-aside', 
+        elementId: `aside_${task.getTaskId()}`,
+    })
+
+    const spanPriority = createElement('span', {elementClass: `task-priority-aside ${task.getPriority()}`});
+    const taskName = createElement('p', {elementText: `${task.getName()}`});
+    taskWrapperAside.append(spanPriority, taskName);
+    
+    return taskWrapperAside;
 }
 
 // Set new project eventListeners, to show/hide and expand content to main-content div (not yet implemented)

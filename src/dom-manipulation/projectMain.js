@@ -1,15 +1,16 @@
 import Project from "../app-logic/project.js";
 import { getProjectById } from "../app-logic/projectStorage.js";
-import { buttonWithImg, createElement } from "../commonFunctions.js";
+import { buttonWithImg, cleanProjectId, createElement } from "../commonFunctions.js";
 import createNewTaskForm from "./createNewTask.js";
 
 // Expand a project in the main-content div (not yet implemented)
 export function expandProjectTasks(buttonThatTriggered){
     const selectedProjectDivParent = buttonThatTriggered.parentElement.parentElement;
-    const projectId = selectedProjectDivParent.getAttribute('id');
-    
+    let parentProjectCleanId = cleanProjectId(selectedProjectDivParent.getAttribute('id'));
+
     // Checks if the project exists
-    const project = getProjectById(projectId);
+    const project = getProjectById(parentProjectCleanId);
+    
     if(project){
         const projectObject = Project(project); // If projects exists, create a "new" object based on him, to be able to manipulate
         
@@ -26,13 +27,13 @@ function createProjectMain(project){
     const projectName = project.getTitle();
     const projectTasks = project.getAllTasks();
 
-    const projectWrapper = createElement('div', {elementId: `${projectId}`, elementClass: 'project-wrapper'});
+    const projectWrapper = createElement('div', {elementId: `main_${projectId}`, elementClass: 'project-wrapper'});
     const projectNameH3 = createElement('h3', {elementClass: 'project-name', elementText: `${projectName}`});
-    const projectTasksWrapper = createElement('div', {elementClass: 'project-tasks'});
+    const projectTasksWrapper = createElement('div', {elementClass: 'project-tasks-main'});
 
     // Generate an HTML element for each existent task
-    const tasks = Array.from(projectTasks).map(task => {
-        const taskElement = createTaskElement(task);
+    Array.from(projectTasks).map(task => {
+        const taskElement = createTaskElementMain(task);
         projectTasksWrapper.appendChild(taskElement); // Append to the list that contains all tasks
     });
     
@@ -46,12 +47,12 @@ function createProjectMain(project){
     return projectWrapper;
 }
 
-function createTaskElement(task){
-    const taskWrapper = createElement('div', {elementId: `${task.getTaskId()}`, elementClass: 'task'})
+export function createTaskElementMain(task){
+    const taskWrapper = createElement('div', {elementId: `main_${task.getTaskId()}`, elementClass: 'task-main'})
         
     // Left side of a task displayed in the #main-content
     const leftSideWrapper = createElement('div', {elementClass: 'task-left-side'});
-    const priorityButton = createElement('button', {elementClass: `task-priority ${task.getPriority()}`});
+    const priorityButton = createElement('button', {elementClass: `task-priority-main ${task.getPriority()}`});
     const taskNameAndDueDate = createElement('div', {elementClass: 'task-name-and-date'});
     const taskName = createElement('p', {elementClass: 'task-name', elementText: `${task.getName()}`});
     const taskDueDate = createElement('p', {elementClass: 'task-due-date', elementText: `${task.getDueDate()}`});

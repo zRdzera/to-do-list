@@ -1,18 +1,6 @@
-// Used to generate unique identifier for a task (Still need to figure it out how the id will be correctly generated)
-const idGenerator = (function (){
-    let index = 0;
-    return () => index++;
-})();
-
 export default function Task(taskName, dueDate = 'none', description = 'none', priority = 'none', taskId){
-    let _taskId;
-    
     // Used to create an object based on an existent (JSON object that comes from storage to Task object)
-    if(taskId)
-        _taskId = taskId;
-    else
-        _taskId = idGenerator();
-
+    let _taskId = taskId;
     let _name = taskName;
     let _dueDate = dueDate;
     let _description = description;

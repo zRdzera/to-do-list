@@ -1,7 +1,9 @@
 import Project from "../app-logic/project.js";
-import saveProject, { alterExistentProject, getProjectById } from "../app-logic/projectStorage.js";
+import { alterExistentProject, generateNewTaskId, getProjectById } from "../app-logic/projectStorage.js";
 import Task from "../app-logic/task.js";
-import { createElement, errorFieldCreator } from "../commonFunctions.js";
+import { cleanProjectId, createElement, errorFieldCreator } from "../commonFunctions.js";
+import { createTaskElementAside } from "./projectAside.js";
+import { createTaskElementMain } from "./projectMain.js";
 
 // Function to generate a form to create a new task, inside an existent project
 export default function createNewTaskForm(buttonNewTask){
@@ -29,10 +31,10 @@ export default function createNewTaskForm(buttonNewTask){
     divButtons.setAttribute('id', 'form-buttons');
 
     const submitButton = buttonWithTextCreator('Add Task', 'add-task', 'button');
-    submitButton.addEventListener('click', () => createTaskHandler(form, buttonNewTask));
+    submitButton.addEventListener('click', () => newTaskHandler(form, buttonNewTask));
 
     const cancelButton = buttonWithTextCreator('Cancel', 'cancel-task', 'button');
-    cancelButton.addEventListener('click', () => cancelTaskHandler(form));
+    cancelButton.addEventListener('click', () => removeTaskForm(form));
 
     fieldsetPriorities.append(
         fieldsetPrioritiesLegend,
@@ -44,7 +46,7 @@ export default function createNewTaskForm(buttonNewTask){
     divButtons.append(
         submitButton,
         cancelButton
-    )
+    );
 
     form.append(
         divTitle, 
@@ -52,7 +54,7 @@ export default function createNewTaskForm(buttonNewTask){
         divDescription,
         fieldsetPriorities,
         divButtons
-    )
+    );
     
     // Append the form to the main-content
     const mainContentDiv = document.getElementById('main-content');
@@ -61,45 +63,65 @@ export default function createNewTaskForm(buttonNewTask){
 }
 
 // If user clicks on the add task button, the info that comes from the form is handled
-function createTaskHandler(form, buttonNewTask){
+function newTaskHandler(form, buttonNewTask){
     const formData = new FormData(form);
 
     if(!formData.get('task_name')){
         errorFieldCreator(document.getElementById('title-input'));
     }
     else {
-        let parametersForNewTask = [];
+        let taskParameters = [];
         formData.forEach((value, key) => {
             if(value === '')
-                parametersForNewTask.push({[`${key}`]: undefined});
+                taskParameters.push({[`${key}`]: undefined});
             else
-                parametersForNewTask.push({[`${key}`]: value});
+                taskParameters.push({[`${key}`]: value});
         });
 
-        // Get all parameters from the new task form and create a new task object
-        let task_name, due_date, description, priority;
-        [{task_name}, {due_date}, {description}, {priority}] = parametersForNewTask;
-        const newTask = Task(task_name, due_date, description, priority);
-
-        const parentProjectId = buttonNewTask.parentElement.getAttribute('id');
-        addTaskToProject(newTask, parentProjectId);
+        const parentProjectId = cleanProjectId(buttonNewTask.parentElement.getAttribute('id'));
+        const newTask = saveTaskToProject(taskParameters, parentProjectId);
+        createTaskElement(newTask, parentProjectId);
+        removeTaskForm(form);
     }
 }
 
+// Generate a new task element in both parent project sections (aside and main-content)
+function createTaskElement(task, projectId){
+    // Place the new element within the project in the aside
+    const asideProjectElement = document.getElementById(`aside_${projectId}`);
+    const tasksSectionAside = asideProjectElement.querySelector('.project-tasks-aside');
+    const taskElementAside = createTaskElementAside(task);
+    tasksSectionAside.appendChild(taskElementAside);
+
+    // Place the new element within the project in the main-content
+    const mainProjectElement = document.getElementById(`main_${projectId}`);
+    const tasksSectionMain = mainProjectElement.querySelector('.project-tasks-main');
+    const taskElementMain = createTaskElementMain(task);
+    tasksSectionMain.appendChild(taskElementMain);    
+}
+
 // If user clicks on the cancel button, the form for the new task is closed
-function cancelTaskHandler(form){
+function removeTaskForm(form){
     const parentElement = form.parentElement;
     parentElement.removeChild(form);
 }
 
 // Get project from storage and transform him in a project object to store the new task inside of it via the method addTaskToProject()
-function addTaskToProject(task, parentProjectId){
+function saveTaskToProject(taskParameters, parentProjectId){
+    let task_name, due_date, description, priority;
+    [{task_name}, {due_date}, {description}, {priority}] = taskParameters;
+
+    // Checks if the project exists
     const projectFromStorage = getProjectById(parentProjectId);
 
     if(projectFromStorage){
         const projectObject = Project(projectFromStorage);
-        projectObject.addTaskToProject(task);
+        const newTask = Task(task_name, due_date, description, priority, generateNewTaskId(projectObject));
+        
+        projectObject.addTaskToProject(newTask);
         alterExistentProject(projectObject);
+
+        return newTask;
     }
 }
 

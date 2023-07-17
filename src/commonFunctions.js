@@ -59,3 +59,6 @@ export function createElement(tagName, ...rest){
 
     return element;
 }
+
+// "Clean" the project identifier from the main-content or aside, using only the relevant part of him (e.g main_project_0 => project_0)
+export const cleanProjectId = (rawId) => rawId.slice(rawId.indexOf('_') + 1);
