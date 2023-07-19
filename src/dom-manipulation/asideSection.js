@@ -1,5 +1,5 @@
 import Project from "../app-logic/project.js";
-import { getProjectListStorage } from "../app-logic/projectStorage.js";
+import { getProjectListStorage } from "../app-logic/storage.js";
 import { default as createNewProjectForm, createProjectAside } from "./projectAside.js";
 
 // IIFE to start all eventListeners related to the user-projects section (for projects stored previously)
@@ -21,10 +21,6 @@ import { default as createNewProjectForm, createProjectAside } from "./projectAs
         createProjectAside(projectObject);
     });
 })();
-
-function updateUI(){
-    
-}
 
 // Handle show/hide all user's projects (div that contains My Projects text)
 function openCloseMyProjects(button){

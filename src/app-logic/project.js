@@ -1,4 +1,4 @@
-import { generateNewProjectId } from "./projectStorage.js";
+import { generateNewProjectId } from "./storage.js";
 import Task from "./task.js";
 
 export default function Project(parameter){
@@ -29,7 +29,7 @@ export default function Project(parameter){
 
     // Methods to manipulate tasks inside a Project 
     const getAllTasks = () => _listOfTasks;
-    const getTaskById = (taskIndex) => _listOfTasks.find(task => task.getId() === taskIndex);
+    const getTaskById = (taskIndex) => _listOfTasks.find(task => task.getTaskId() === taskIndex);
     const addTaskToProject = (task) => _listOfTasks.push(task);
     const removeTaskFromProject = (taskId) => {
         _listOfTasks = _listOfTasks.filter(task => task.getTaskId() !== taskId);

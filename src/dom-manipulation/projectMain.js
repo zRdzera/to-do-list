@@ -1,7 +1,9 @@
 import Project from "../app-logic/project.js";
-import { getProjectById } from "../app-logic/projectStorage.js";
-import { buttonWithImg, cleanProjectId, createElement } from "../commonFunctions.js";
-import createNewTaskForm from "./createNewTask.js";
+import { getProjectById } from "../app-logic/storage.js";
+import { buttonWithImg, cleanProjectId, createCommonTaskForm, createElement } from "../commonFunctions.js";
+import { default as newTaskForm } from "./taskCreation.js";
+import { editTaskForm } from "./taskEdit.js";
+import { deleteTaskFromProject } from "./taskRemove.js";
 
 // Expand a project in the main-content div (not yet implemented)
 export function expandProjectTasks(buttonThatTriggered){
@@ -15,9 +17,8 @@ export function expandProjectTasks(buttonThatTriggered){
         const projectObject = Project(project); // If projects exists, create a "new" object based on him, to be able to manipulate
         
         // Append the project expanded from aside and display it in the #main-content element
-        const mainContentDiv = document.getElementById('main-content');
         const projectMainElement = createProjectMain(projectObject);
-        mainContentDiv.appendChild(projectMainElement);
+        clearMainAndAppendNode(projectMainElement);
     }
 }
 
@@ -33,13 +34,16 @@ function createProjectMain(project){
 
     // Generate an HTML element for each existent task
     Array.from(projectTasks).map(task => {
-        const taskElement = createTaskElementMain(task);
+        const taskElement = createTaskElementMain(task, projectId);
         projectTasksWrapper.appendChild(taskElement); // Append to the list that contains all tasks
     });
     
     // Button to add a new task to the project
     const newTaskButton = buttonWithImg('add-task', '/dist/assets/main-icons/plus-icon-task-add.svg', 'Add new task');
-    newTaskButton.addEventListener('click', () => createNewTaskForm(newTaskButton));
+    newTaskButton.addEventListener('click', () => {
+        let taskForm = createCommonTaskForm();
+        newTaskForm(taskForm, projectId);
+    });
 
     // Append all elements to the project wrapper (hold all tasks and infos of a single project)
     projectWrapper.append(projectNameH3, projectTasksWrapper, newTaskButton);
@@ -47,9 +51,18 @@ function createProjectMain(project){
     return projectWrapper;
 }
 
-export function createTaskElementMain(task){
-    const taskWrapper = createElement('div', {elementId: `main_${task.getTaskId()}`, elementClass: 'task-main'})
-        
+// Clear main-content and append the 'expanded' project from aside
+function clearMainAndAppendNode(element){
+    const mainContent = document.getElementById('main-content');
+    while(mainContent.lastElementChild){
+        mainContent.removeChild(mainContent.lastElementChild);
+    }
+    mainContent.appendChild(element);
+}
+
+export function createTaskElementMain(task, projectId){
+    const taskWrapper = createElement('div', {elementId: `main_${task.getTaskId()}`, elementClass: 'task-main'});
+
     // Left side of a task displayed in the #main-content
     const leftSideWrapper = createElement('div', {elementClass: 'task-left-side'});
     const priorityButton = createElement('button', {elementClass: `task-priority-main ${task.getPriority()}`});
@@ -63,7 +76,12 @@ export function createTaskElementMain(task){
     const rightSideWrapper = createElement('div', {elementClass: 'task-right-side'});
     const expandButton = buttonWithImg('expand-task', '/dist/assets/main-icons/eye-icon.png');
     const editButton = buttonWithImg('edit-task', '/dist/assets/main-icons/edit-icon.svg');
+    editButton.addEventListener('click', () => {
+        let taskForm = createCommonTaskForm();
+        editTaskForm(task, projectId, taskForm);
+    });
     const removeButton = buttonWithImg('delete-task', '/dist/assets/main-icons/remove-icon.svg');
+    removeButton.addEventListener('click', () => deleteTaskFromProject(task, projectId));
     rightSideWrapper.append(expandButton, editButton, removeButton);
 
     // Append to the task wrapper

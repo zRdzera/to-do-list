@@ -1,6 +1,6 @@
 import Project from "../app-logic/project.js";
-import saveProject from "../app-logic/projectStorage.js";
-import { buttonWithImg, createElement, errorFieldCreator } from "../commonFunctions.js";
+import saveProject from "../app-logic/storage.js";
+import { buttonWithImg, createElement, createEmptyHint, errorFieldCreator } from "../commonFunctions.js";
 import { expandProjectTasks } from "./projectMain.js";
 
 // Function to generate a form to create a new project
@@ -50,9 +50,15 @@ function newProjectHandler(form, buttonNewProject){
     }
     else {
         const project = Project(formData.get('project_name'));
-        createProjectAside(project);
-        saveProject(project);
-        removeProjectForm(form, buttonNewProject);
+
+        if(saveProject(project) !== false){
+            createProjectAside(project);
+            removeProjectForm(form, buttonNewProject);
+        }
+        else {
+            // console.log("Project already exists!");
+            return;
+        }
     }
 }
 
@@ -86,8 +92,11 @@ export function createProjectAside(projectObject){
     
     // Wrapper for all tasks of the current project
     const allTasksWrapper = createElement('div', {elementClass: 'project-tasks-aside'});
-    Array.from(allTasksElements)
-        .forEach(element => allTasksWrapper.appendChild(element));
+
+    if(allTasksElements.length === 0)
+        createEmptyHint(allTasksWrapper);
+    else 
+        Array.from(allTasksElements).forEach(element => allTasksWrapper.appendChild(element));
 
     // Append all elements to a div that wraps all the content of a project
     const divWrapper = createElement('div', {elementClass: 'project-name-and-tasks', elementId: `aside_${projectId}`});
@@ -99,6 +108,7 @@ export function createProjectAside(projectObject){
     return userProjectsSection.appendChild(divWrapper);
 }
 
+// Create a task element to put inside the related project in the aside section
 export function createTaskElementAside(task){
     const taskWrapperAside = createElement('div', {
         elementClass: 'task-aside', 

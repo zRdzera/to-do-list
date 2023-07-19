@@ -3,7 +3,7 @@ export default function saveProject(project){
     const allowSave = checkIfProjectExists(project.getTitle());
 
     // If the above function returns false, the project will not be stored
-    if(allowSave === false) return;
+    if(allowSave === false) return false;
         
     const jsonProject = projectToJson(project);
     const projectsStorage = getProjectListStorage();
