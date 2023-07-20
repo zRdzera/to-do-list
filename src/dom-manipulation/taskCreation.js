@@ -1,6 +1,6 @@
 import Project from "../app-logic/project.js";
 import Task from "../app-logic/task.js";
-import { alterExistentProject, generateNewTaskId, getProjectById } from "../app-logic/storage.js";
+import { updateExistentProject, generateNewTaskId, getProjectById } from "../app-logic/storage.js";
 import { getTaskElements, removeEmptyHint, taskFormDataHandler } from "../commonFunctions.js";
 import { appendToModal, removeFromModal } from "./modal.js";
 import { createTaskElementAside } from "./projectAside.js";
@@ -37,7 +37,7 @@ function saveTaskToProject(taskParameters, parentProjectId){
         const newTask = Task(task_name, due_date, description, priority, generateNewTaskId(projectObject));
         
         projectObject.addTaskToProject(newTask);
-        alterExistentProject(projectObject); // Update the project with the new task
+        updateExistentProject(projectObject); // Update the project in the storage with the new task
 
         return newTask;
     }

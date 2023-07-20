@@ -1,5 +1,5 @@
 import Project from "../app-logic/project.js";
-import { alterExistentProject, getProjectById } from "../app-logic/storage.js";
+import { updateExistentProject, getProjectById } from "../app-logic/storage.js";
 import { getTaskElements, taskFormDataHandler } from "../commonFunctions.js";
 import { appendToModal, removeFromModal } from "./modal.js";
 import { createTaskElementAside } from "./projectAside.js";
@@ -48,20 +48,6 @@ function editTaskHandler(form, projectId){
     }
 }
 
-function updateTaskElement(task, projectId){
-    const {taskListAside, taskAside, taskListMain, taskMain} = getTaskElements(task, projectId);
-
-    // Update task element within the project in the aside (remove the old task and place it the new)
-    const updatedAsideTask = createTaskElementAside(task);
-    taskListAside.insertBefore(updatedAsideTask, taskAside);
-    taskListAside.removeChild(taskAside);
-
-    // Update task element within the project in the main-content (remove the old task and place it the new)
-    const updatedMainTask = createTaskElementMain(task, projectId);
-    taskListMain.insertBefore(updatedMainTask, taskMain);
-    taskListMain.removeChild(taskMain);
-}
-
 function saveModTaskToProject(taskParameters, parentProjectId){
     let task_id, task_name, due_date, description, priority;
     [{task_name}, {due_date}, {description}, {priority}, {task_id}] = taskParameters;
@@ -78,8 +64,23 @@ function saveModTaskToProject(taskParameters, parentProjectId){
         taskToChange.setDescription(description);
         taskToChange.setPriority(priority);
 
-        alterExistentProject(projectObject); // Update the project with the modified task
+        updateExistentProject(projectObject); // Update the project in the storage with the modified task 
 
         return taskToChange;
     }
+}
+
+// Update the element in the DOM with the new values (aside and main sections)
+function updateTaskElement(task, projectId){
+    const {taskListAside, taskAside, taskListMain, taskMain} = getTaskElements(task, projectId);
+
+    // Update task element within the project in the aside (remove the old task and place it the new)
+    const updatedAsideTask = createTaskElementAside(task);
+    taskListAside.insertBefore(updatedAsideTask, taskAside);
+    taskListAside.removeChild(taskAside);
+
+    // Update task element within the project in the main-content (remove the old task and place it the new)
+    const updatedMainTask = createTaskElementMain(task, projectId);
+    taskListMain.insertBefore(updatedMainTask, taskMain);
+    taskListMain.removeChild(taskMain);
 }

@@ -107,7 +107,7 @@ export function errorFieldCreator(elementToAppendBelow){
         `width: max-content; 
         font-size: 11px; 
         position: absolute;
-        margin-top: 8px;
+        margin-top: 7px;
         margin-left: 5px`;
 
     const parent = elementToAppendBelow.parentElement;

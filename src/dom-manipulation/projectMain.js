@@ -1,6 +1,8 @@
 import Project from "../app-logic/project.js";
-import { getProjectById } from "../app-logic/storage.js";
+import { getProjectById, removeProjectStorage } from "../app-logic/storage.js";
 import { buttonWithImg, cleanProjectId, createCommonTaskForm, createElement } from "../commonFunctions.js";
+import { editProjectHandler } from "./projectEdit.js";
+import { removeProjectHandler } from "./projectRemove.js";
 import { default as newTaskForm } from "./taskCreation.js";
 import { editTaskForm } from "./taskEdit.js";
 import { deleteTaskFromProject } from "./taskRemove.js";
@@ -28,8 +30,16 @@ function createProjectMain(project){
     const projectName = project.getTitle();
     const projectTasks = project.getAllTasks();
 
-    const projectWrapper = createElement('div', {elementId: `main_${projectId}`, elementClass: 'project-wrapper'});
     const projectNameH3 = createElement('h3', {elementClass: 'project-name', elementText: `${projectName}`});
+    const editButton = buttonWithImg('edit-project', '/dist/assets/main-icons/edit-icon-26.svg');
+    editButton.addEventListener('click', () => editProjectHandler(projectId));
+    const removeButton = buttonWithImg('remove-project', '/dist/assets/main-icons/trash-icon-28.svg');
+    removeButton.addEventListener('click', () => removeProjectHandler(projectId));
+    const projectButtons = createElement('div', {elementClass: 'project-buttons'});
+    projectButtons.append(editButton, removeButton);
+    const projectHeader = createElement('div', {elementClass: 'project-header'});
+    projectHeader.append(projectNameH3, projectButtons);
+
     const projectTasksWrapper = createElement('div', {elementClass: 'project-tasks-main'});
 
     // Generate an HTML element for each existent task
@@ -46,18 +56,10 @@ function createProjectMain(project){
     });
 
     // Append all elements to the project wrapper (hold all tasks and infos of a single project)
-    projectWrapper.append(projectNameH3, projectTasksWrapper, newTaskButton);
+    const projectWrapper = createElement('div', {elementId: `main_${projectId}`, elementClass: 'project-wrapper'});
+    projectWrapper.append(projectHeader, projectTasksWrapper, newTaskButton);
 
     return projectWrapper;
-}
-
-// Clear main-content and append the 'expanded' project from aside
-function clearMainAndAppendNode(element){
-    const mainContent = document.getElementById('main-content');
-    while(mainContent.lastElementChild){
-        mainContent.removeChild(mainContent.lastElementChild);
-    }
-    mainContent.appendChild(element);
 }
 
 export function createTaskElementMain(task, projectId){
@@ -88,4 +90,13 @@ export function createTaskElementMain(task, projectId){
     taskWrapper.append(leftSideWrapper, rightSideWrapper);
 
     return taskWrapper;
+}
+
+// Clear main-content and append the 'expanded' project from aside
+function clearMainAndAppendNode(element){
+    const mainContent = document.getElementById('main-content');
+    while(mainContent.lastElementChild){
+        mainContent.removeChild(mainContent.lastElementChild);
+    }
+    mainContent.appendChild(element);
 }

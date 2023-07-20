@@ -12,8 +12,18 @@ export default function saveProject(project){
     localStorage.setItem('projects-list', JSON.stringify(projectsStorage));
 }
 
+// Remove project and its tasks from storage
+export function removeProjectStorage(projectId){
+    const projectsStorage = getProjectListStorage();
+    const indexToRemove =  Array.from(projectsStorage)
+        .findIndex(project => project._projectId === projectId);
+    
+    projectsStorage.splice(indexToRemove, 1);
+    localStorage.setItem('projects-list', JSON.stringify(projectsStorage));
+}
+
 // Change some part of an existent project
-export function alterExistentProject(project){
+export function updateExistentProject(project){
     const jsonProject = projectToJson(project);
     const projectsStorage = getProjectListStorage();
 

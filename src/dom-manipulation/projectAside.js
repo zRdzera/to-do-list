@@ -18,7 +18,7 @@ export default function createNewProjectForm(buttonNewProject){
     });
 
     const projectNameDiv = document.createElement('div');
-    projectNameDiv.appendChild(projectNameInput)
+    projectNameDiv.appendChild(projectNameInput);
 
     // Button to confirm the creation of a new project
     const addButton = buttonWithImg('create-project-button', '/dist/assets/aside-icons/selected-icon.svg');
@@ -132,7 +132,7 @@ export function newProjectButtonListener(buttonShowHide, buttonExpand){
 }
 
 // Handle show/hide tasks of a project, by clicking in the project div
-export function openCloseProjectTasks(projectButton){
+function openCloseProjectTasks(projectButton){
     const iconInsideButton = projectButton.getElementsByTagName('img')[0];
     
     // Mantain default class that's used for button styling
@@ -167,13 +167,15 @@ export function openCloseProjectTasks(projectButton){
     function hideTasksOfProject(button){
         const parentProject = button.parentElement;
         const tasksOfProject = parentProject.lastElementChild;
-        tasksOfProject.style.cssText = 'display: none;';
+        tasksOfProject.style.cssText = 'animation: delayTasks 300ms reverse forwards;';
+        setTimeout(() => tasksOfProject.style.cssText = 'display: none;', 300);
     }
 
     // Function used to show tasks of a project, by clicking in the project name (if closed)
     function showTasksOfProject(button){
         const parentProject = button.parentElement;
         const tasksOfProject = parentProject.lastElementChild;
-        tasksOfProject.style.cssText = 'display: flex;';
+        tasksOfProject.style.cssText = 'animation: delayTasks 300ms forwards;';
+        setTimeout(() => tasksOfProject.style.cssText = 'display: flex;', 200);
     }
 }

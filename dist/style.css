@@ -3,6 +3,7 @@ html {
     font-size: 62.5%;
     box-sizing: border-box;
 
+    /* Fonts */
     --roboto: 'Roboto', 'Franklin Gothic Medium', 'Arial Narrow', sans-serif;
     --inter: 'Inter', sans-serif;
 }
@@ -55,6 +56,20 @@ body {
     }
 }
 
+@keyframes delayTasks {
+    0% {
+        opacity: 0;
+    }
+
+    25% {
+        opacity: 0.3;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
             /* ========== HEADER STYLES ========== */
 #todo-header {
     display: flex;
@@ -64,6 +79,7 @@ body {
     background-color: #de483a;
     box-shadow: 0 0 1rem black;
     grid-column: 1 / 3;
+    z-index: 1;
 }
 
 #hamburguer-menu-button, #home-button {
@@ -116,7 +132,7 @@ body {
     flex-direction: column;
     padding: 3rem 2rem;
     overflow-y: auto;
-    background-color: #db71672c;
+    background-color:#dfdfdf1f; /* #db71672c */
     grid-column: 1 / 2;
 }
 
@@ -151,11 +167,17 @@ body {
     cursor: pointer;
     background: transparent;
     padding: 0.5rem;
-    border-radius: 0.5rem;
     font-size: 1.5rem;
     font-family: var(--roboto);
     font-weight: bold;
     transition: all 150ms;
+}
+
+#aside-navigation > button:hover, 
+#create-and-list-user-projects:hover,
+.project-name-and-tasks > div:first-of-type:hover {
+    border-radius: 0.5rem;
+    background-color: rgba(218, 218, 218, 0.993);
 }
 
 /* Today and this week buttons */
@@ -166,10 +188,6 @@ body {
 #aside-navigation > button :last-child {
     filter: opacity(60%);
     transition: filter 150ms;
-}
-
-#aside-navigation > button:hover {
-    background-color: rgb(218, 218, 218);
 }
 
 #aside-navigation > button:hover :last-child {
@@ -194,11 +212,6 @@ body {
     display: flex;
     justify-content: space-between;
     transition: all 150ms;
-}
-
-#create-and-list-user-projects:hover {
-    border-radius: 0.5rem;
-    background-color: rgb(218, 218, 218);
 }
 
 #user-projects-button :first-child {
@@ -245,13 +258,14 @@ body {
 
 #form-add-project > div:first-of-type input#project-name {
     width: 100%;
-    border: none;
+    border: 1px solid black;
     font-size: 1.2rem;
     font-family: var(--roboto);
     padding: 0.8rem;
 }
 
 #form-add-project > div:first-of-type input#project-name:focus {
+    border-color: transparent;
     outline: 1px solid #ff5242;
 }
 
@@ -279,12 +293,17 @@ body {
 }
 
 #form-add-project button {
-    filter: brightness(250%);
+    filter: brightness(130%) opacity(70%);
     transition: filter 300ms;
 }
 
 #form-add-project button:hover {
+    scale: 1.1;
     filter: none;
+}
+
+#form-add-project button:active {
+    scale: 0.9;
 }
 
 /* ========== Section of user's projects  ========== */
@@ -309,17 +328,13 @@ body {
     font-size: 1.4rem !important;
 }
 
-.project-name-and-tasks .project:hover {
-    background-color: rgb(218, 218, 218);
-}
-
 .project :last-child {
     margin-left: auto;
     padding: 0.2rem;
     border-radius: 2rem;
     border: 1px solid transparent;
     filter: invert(0.6);
-    transition: all 150ms;
+    transition: filter 150ms;
 }
 
 .project :last-child:active {
@@ -334,7 +349,7 @@ body {
 .project-tasks-aside {
     display: flex;
     flex-direction: column;
-    margin-left: 1rem;
+    margin-left: 0.7rem;
 }
 
 .project-tasks-aside .task-aside, 
@@ -343,18 +358,13 @@ body {
     align-items: center;
     column-gap: 1rem;
     font-family: var(--roboto);
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     padding: 0.5rem;
 }
 
-.project-tasks-aside .task-aside:hover {
+.project-tasks-aside .task-aside:not(.project-empty-hint):hover {
     border-radius: 0.5rem;
     background-color: rgb(218, 218, 218);
-}
-
-.task-aside .task-priority-aside {
-    width: 0.5rem;
-    height: 1.5rem;
 }
 
 /* Task priority button colors */
@@ -364,17 +374,36 @@ body {
 }
 
 .no-priority {
-    border-color: rgba(0, 0, 0, 0.3);
+    border-color: rgba(0, 0, 0, 0.4);
 }
 
 .high {
-    border-color: rgba(212, 7, 7, 0.5);
+    border-color: rgba(212, 7, 7, 0.6);
     background-color: rgba(212, 7, 7, 0.1);
 }
 
 .low {
-    border-color: rgba(0, 162, 255, 0.5);
+    border-color: rgba(0, 4, 255, 0.6);
     background-color: rgba(0, 162, 255, 0.1);
+}
+
+.task-aside .task-priority-aside {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 1rem;
+    border: none;
+}
+
+.task-priority-aside.no-priority {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.task-priority-aside.high {
+    background-color: rgba(212, 7, 7, 0.8);
+}
+
+.task-priority-aside.low {
+    background-color: rgba(0, 4, 255, 0.7);
 }
 
             /* ========== MAIN CONTENT STYLES ========== */
@@ -395,9 +424,59 @@ body {
     row-gap: 2rem;
 }
 
+#main-content .project-header {
+    display: flex;
+    column-gap: 2rem;
+    align-items: center;
+}
+
 #main-content .project-name {
     font-family: var(--roboto);
     font-size: 2.8rem;
+    padding: 0.5rem;
+    overflow-x: auto;
+    border: 1px solid transparent;
+}
+
+#main-content .project-header .edit-project-buttons,
+#main-content .project-header .project-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    height: min-content;
+    width: max-content;
+}
+
+#main-content .project-header .edit-project-buttons > button,
+#main-content .project-header .project-buttons > button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: transparent;
+    transition: all 150ms;
+}
+
+#main-content .project-header .edit-project-buttons > button {
+    filter: opacity(70%);
+}
+
+#main-content .project-header .project-buttons > button {
+    filter: opacity(70%) grayscale(100%);
+}
+
+#main-content .project-header .edit-project-buttons > button:active,
+#main-content .project-header .project-buttons > button:active {
+    scale: 0.9 !important;
+}
+
+#main-content .project-header .edit-project-buttons > button:hover,
+#main-content .project-header .project-buttons > button:hover {
+    scale: 1.1;
+    filter: none;
+}
+
+#main-content .project-header .edit-project-buttons img,
+#main-content .project-header .project-buttons img {
+    vertical-align: middle;
 }
 
 #main-content .project-tasks-main {
@@ -433,6 +512,10 @@ body {
     background: transparent;
     filter: opacity(80%) grayscale(100%);
     transition: filter 150ms;
+}
+
+#main-content .project-tasks-main .task-right-side > button:active {
+    scale: 0.9 !important;
 }
 
 #main-content .project-tasks-main .task-right-side > button:hover {
