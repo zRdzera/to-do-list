@@ -8,6 +8,8 @@ import { createTaskElementMain } from "./projectMain.js";
 
 // Function to generate a form to create a new task, inside an existent project
 export default function newTaskForm(form, projectId){
+    const formTitle = form.querySelector('.form-header');
+    formTitle.textContent = 'Add a new task';
     const submitButton = form.querySelector('#add-task');
     submitButton.addEventListener('click', () => newTaskHandler(form, projectId));
     appendToModal(form);

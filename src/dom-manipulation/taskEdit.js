@@ -6,14 +6,22 @@ import { createTaskElementAside } from "./projectAside.js";
 import { createTaskElementMain } from "./projectMain.js";
 
 export function editTaskForm(task, projectId, form){
+    const formTitle = form.querySelector('.form-header');
+    formTitle.textContent = 'Edit task';
+
     const taskInputName = form.querySelector('#task-name-input');
     taskInputName.setAttribute('value', `${task.getName()}`);
 
     const taskInputDueDate= form.querySelector('#due-date-input');
-    taskInputDueDate.setAttribute('value', `${task.getDueDate()}`);
+    if(task.getDueDate() === 'none'){
+        taskInputDueDate.setAttribute('value', '');
+    }
+    else {
+        taskInputDueDate.setAttribute('value', `${task.getDueDate()}`);
+    }
 
     const taskInputDescription = form.querySelector('#description-input');
-    taskInputDescription.setAttribute('value', `${task.getDescription()}`);
+    taskInputDescription.textContent = `${task.getDescription()}`;
 
     const taskPriority = task.getPriority();
     const formPriorities = form.querySelectorAll("[name='priority']");

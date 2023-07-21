@@ -30,9 +30,11 @@ export function removeEmptyHint(taskList){
 export function createCommonTaskForm(){
     const form = createElement('form', {elementId: 'form-task'});
     
-    const divTitle = divCreator('Title', 'task-name-input', 'text', 'task_name');
+    const formTitle = createElement('h3', {elementClass: 'form-header'});
+
+    const divTitle = divCreator('Title *', 'task-name-input', 'text', 'task_name');
     const divDueDate = divCreator('Due date', 'due-date-input', 'date', 'due_date');
-    const divDescription = divCreator('Description', 'description-input', 'text', 'description');
+    const divDescription = divCreator('Description', 'description-input', 'textarea', 'description');
    
     // Fieldset with radio buttons for priority selection
     const fieldsetPriorities = document.createElement('fieldset');
@@ -54,9 +56,9 @@ export function createCommonTaskForm(){
 
     fieldsetPriorities.append(
         fieldsetPrioritiesLegend,
-        divNoPriority,
+        divPriorityHigh,
         divPriorityLow,
-        divPriorityHigh
+        divNoPriority
     );
     
     divButtons.append(
@@ -65,6 +67,7 @@ export function createCommonTaskForm(){
     );
 
     form.append(
+        formTitle,
         divTitle, 
         divDueDate, 
         divDescription,
@@ -86,8 +89,8 @@ export function taskFormDataHandler(form){
     else {
         let taskParameters = [];
         formData.forEach((value, key) => {
-            if(value === '')
-                taskParameters.push({[`${key}`]: undefined});
+            if(value === '' || value === undefined)
+                taskParameters.push({[`${key}`]: 'none'});
             else
                 taskParameters.push({[`${key}`]: value});
         });
@@ -106,14 +109,11 @@ export function errorFieldCreator(elementToAppendBelow){
     errorField.style.cssText = 
         `width: max-content; 
         font-size: 11px; 
-        position: absolute;
-        margin-top: 7px;
+        margin-top: 2px;
         margin-left: 5px`;
 
     const parent = elementToAppendBelow.parentElement;
-    parent.style.cssText = 'position: relative;'
     parent.appendChild(errorField);
-
     setTimeout(() => parent.removeChild(errorField), 1500);
 }
 
@@ -169,8 +169,20 @@ export function divCreator(labelText, inputId, inputType, inputName){
     label.setAttribute('for', `${inputId}`);
     label.textContent = labelText;
 
-    const input = document.createElement('input');
-    input.setAttribute('type', `${inputType}`);
+    let input;
+    if(inputType === 'textarea'){
+        input = document.createElement('textarea');
+        input.setAttribute('maxlength', '140');
+    }
+    else {
+        input = document.createElement('input');
+        input.setAttribute('type', `${inputType}`);
+
+        if(inputType === 'text'){
+            input.setAttribute('maxlength', '25');
+        }
+    }
+
     input.setAttribute('id', `${inputId}`);
     input.setAttribute('name', `${inputName}`);
 
@@ -178,7 +190,6 @@ export function divCreator(labelText, inputId, inputType, inputName){
         input.setAttribute('value', `${inputId}`);
 
     divWrapper.append(label, input);
-
     return divWrapper;
 }
 

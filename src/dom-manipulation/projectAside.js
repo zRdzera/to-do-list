@@ -123,7 +123,7 @@ export function createTaskElementAside(task){
 }
 
 // Set new project eventListeners, to show/hide and expand content to main-content div (not yet implemented)
-export function newProjectButtonListener(buttonShowHide, buttonExpand){
+function newProjectButtonListener(buttonShowHide, buttonExpand){
     buttonShowHide.addEventListener('click', () => openCloseProjectTasks(buttonShowHide));
     buttonExpand.addEventListener('click', (event) => {
         expandProjectTasks(buttonExpand); // Expand means that the project will be expanded to the main-content
@@ -167,7 +167,7 @@ function openCloseProjectTasks(projectButton){
     function hideTasksOfProject(button){
         const parentProject = button.parentElement;
         const tasksOfProject = parentProject.lastElementChild;
-        tasksOfProject.style.cssText = 'animation: delayTasks 300ms reverse forwards;';
+        tasksOfProject.style.cssText = 'animation: delayAside 300ms reverse forwards;';
         setTimeout(() => tasksOfProject.style.cssText = 'display: none;', 300);
     }
 
@@ -175,7 +175,7 @@ function openCloseProjectTasks(projectButton){
     function showTasksOfProject(button){
         const parentProject = button.parentElement;
         const tasksOfProject = parentProject.lastElementChild;
-        tasksOfProject.style.cssText = 'animation: delayTasks 300ms forwards;';
-        setTimeout(() => tasksOfProject.style.cssText = 'display: flex;', 200);
+        tasksOfProject.style.cssText = 'animation: delayAside 300ms forwards;';
+        setTimeout(() => tasksOfProject.style.cssText = 'display: flex;', 300);
     }
 }

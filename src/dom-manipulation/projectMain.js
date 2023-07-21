@@ -5,6 +5,7 @@ import { editProjectHandler } from "./projectEdit.js";
 import { removeProjectHandler } from "./projectRemove.js";
 import { default as newTaskForm } from "./taskCreation.js";
 import { editTaskForm } from "./taskEdit.js";
+import { expandTasksInfo } from "./taskExpand.js";
 import { deleteTaskFromProject } from "./taskRemove.js";
 
 // Expand a project in the main-content div (not yet implemented)
@@ -77,6 +78,10 @@ export function createTaskElementMain(task, projectId){
     // Right side (buttons to change state of a task) of a task displayed in the #main-content
     const rightSideWrapper = createElement('div', {elementClass: 'task-right-side'});
     const expandButton = buttonWithImg('expand-task', '/dist/assets/main-icons/eye-icon.png');
+    expandButton.addEventListener('click', () => {
+        let taskForm = createCommonTaskForm();
+        expandTasksInfo(task, projectId, taskForm);
+    });
     const editButton = buttonWithImg('edit-task', '/dist/assets/main-icons/edit-icon.svg');
     editButton.addEventListener('click', () => {
         let taskForm = createCommonTaskForm();
