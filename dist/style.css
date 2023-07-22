@@ -413,6 +413,14 @@ body {
     padding: 3rem 10rem;
     overflow-y: auto;
     grid-column: 2 / 3;
+    display: flex;
+    flex-direction: column;
+    row-gap: 3rem;
+}
+
+#main-content #today-header {
+    font-size: 2.8rem;
+    font-family: var(--roboto);
 }
 
 /* Expand main content to fill the space left by the aside */
@@ -423,7 +431,7 @@ body {
 #main-content .project-wrapper {
     display: flex;
     flex-direction: column;
-    row-gap: 2rem;
+    row-gap: 1rem;
 }
 
 #main-content .project-header {
@@ -434,7 +442,7 @@ body {
 
 #main-content .project-name {
     font-family: var(--roboto);
-    font-size: 2.8rem;
+    font-size: 2.4rem;
     padding: 0.5rem;
     overflow-x: auto;
     border: 1px solid transparent;

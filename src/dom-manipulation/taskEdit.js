@@ -1,9 +1,10 @@
 import Project from "../app-logic/project.js";
-import { updateExistentProject, getProjectById } from "../app-logic/storage.js";
+import { updateExistentProject, getProjectById, getProjectListStorage } from "../app-logic/storage.js";
 import { getTaskElements, taskFormDataHandler } from "../commonFunctions.js";
 import { appendToModal, removeFromModal } from "./modal.js";
 import { createTaskElementAside } from "./projectAside.js";
 import { createTaskElementMain } from "./projectMain.js";
+import { todayTasksSection } from "./today.js";
 
 export function editTaskForm(task, projectId, form){
     const formTitle = form.querySelector('.form-header');
@@ -78,6 +79,13 @@ function saveModTaskToProject(taskParameters, parentProjectId){
     }
 }
 
+function checkIfTodayMain(){
+    const main = document.getElementById('main-content');
+    const headerIdentifier = main.querySelector('#today-header');
+
+    return main.firstElementChild === headerIdentifier ? true : false;
+}
+
 // Update the element in the DOM with the new values (aside and main sections)
 function updateTaskElement(task, projectId){
     const {taskListAside, taskAside, taskListMain, taskMain} = getTaskElements(task, projectId);
@@ -87,8 +95,13 @@ function updateTaskElement(task, projectId){
     taskListAside.insertBefore(updatedAsideTask, taskAside);
     taskListAside.removeChild(taskAside);
 
-    // Update task element within the project in the main-content (remove the old task and place it the new)
-    const updatedMainTask = createTaskElementMain(task, projectId);
-    taskListMain.insertBefore(updatedMainTask, taskMain);
-    taskListMain.removeChild(taskMain);
+    if(checkIfTodayMain()){ 
+        todayTasksSection();
+    }
+    else {
+        // Update task element within the project in the main-content (remove the old task and place it the new)
+        const updatedMainTask = createTaskElementMain(task, projectId);
+        taskListMain.insertBefore(updatedMainTask, taskMain);
+        taskListMain.removeChild(taskMain);
+    }
 }

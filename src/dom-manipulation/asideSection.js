@@ -1,10 +1,14 @@
 import Project from "../app-logic/project.js";
 import { getProjectListStorage } from "../app-logic/storage.js";
 import { default as createNewProjectForm, createProjectAside } from "./projectAside.js";
+import { todayTasksSection } from "./today.js";
 
 // Function to start all eventListeners related to the user-projects section and initial elements (for projects stored previously)
 export default function startUIAndListeners(){
     openCloseAside();
+    
+    const todayButton = document.getElementById('today-todo-button');
+    todayButton.addEventListener('click', () => todayTasksSection());
 
     // Button to show/hide user's projects
     const userProjectsButton = document.getElementById('user-projects-button');

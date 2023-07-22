@@ -1,6 +1,6 @@
 import Project from "../app-logic/project.js";
-import { getProjectById, removeProjectStorage } from "../app-logic/storage.js";
-import { buttonWithImg, cleanProjectId, createCommonTaskForm, createElement } from "../commonFunctions.js";
+import { getProjectById } from "../app-logic/storage.js";
+import { buttonWithImg, cleanProjectId, clearMainAndAppendNode, createCommonTaskForm, createElement } from "../commonFunctions.js";
 import { editProjectHandler } from "./projectEdit.js";
 import { removeProjectHandler } from "./projectRemove.js";
 import { default as newTaskForm } from "./taskCreation.js";
@@ -26,7 +26,7 @@ export function expandProjectTasks(buttonThatTriggered){
 }
 
 // Create a HTML project element to place in the #main-content
-function createProjectMain(project){
+export function createProjectMain(project){
     const projectId = project.getProjectId();
     const projectName = project.getTitle();
     const projectTasks = project.getAllTasks();
@@ -95,13 +95,4 @@ export function createTaskElementMain(task, projectId){
     taskWrapper.append(leftSideWrapper, rightSideWrapper);
 
     return taskWrapper;
-}
-
-// Clear main-content and append the 'expanded' project from aside
-function clearMainAndAppendNode(element){
-    const mainContent = document.getElementById('main-content');
-    while(mainContent.lastElementChild){
-        mainContent.removeChild(mainContent.lastElementChild);
-    }
-    mainContent.appendChild(element);
 }

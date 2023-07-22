@@ -18,6 +18,24 @@ export function getTaskElements(task, projectId){
     }
 }
 
+// Clear main-content and append the 'expanded' project from aside
+export function clearMainAndAppendNode(element, ...rest){
+    const mainContent = document.getElementById('main-content');
+    while(mainContent.lastElementChild){
+        mainContent.removeChild(mainContent.lastElementChild);
+    }
+
+    if(rest.length !== 0)
+        mainContent.appendChild(rest[0]);
+
+    if(element.length >= 1){
+        element.forEach(e => mainContent.appendChild(e));
+    }
+    else {
+        mainContent.appendChild(element);
+    }
+}
+
 export function createEmptyHint(taskList){
     const emptyHint = createElement('p', {elementClass: 'project-empty-hint', elementText: 'No tasks yet!'});
     taskList.appendChild(emptyHint);
