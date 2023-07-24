@@ -1,14 +1,26 @@
 import Project from "../app-logic/project.js";
 import { getProjectListStorage } from "../app-logic/storage.js";
 import { default as createNewProjectForm, createProjectAside } from "./projectAside.js";
-import { todayTasksSection } from "./today.js";
+import { getWeekTasks, getFilteredTasks } from "./todayAndWeekTasks.js";
 
 // Function to start all eventListeners related to the user-projects section and initial elements (for projects stored previously)
 export default function startUIAndListeners(){
     openCloseAside();
     
+    // Start the today section, as the first selected
     const todayButton = document.getElementById('today-todo-button');
-    todayButton.addEventListener('click', () => todayTasksSection());
+    todayButton.classList.add('tab-selected');
+    getFilteredTasks('today');
+    todayButton.addEventListener('click', () => {
+        selectTab(todayButton);
+        getFilteredTasks('today');
+    });
+
+    const weekButton = document.getElementById('week-todo-button');
+    weekButton.addEventListener('click', () => {
+        selectTab(weekButton);
+        getFilteredTasks('week');
+    })
 
     // Button to show/hide user's projects
     const userProjectsButton = document.getElementById('user-projects-button');
@@ -25,6 +37,13 @@ export default function startUIAndListeners(){
         createProjectAside(projectObject);
     });
 };
+
+export function selectTab(elementClicked){
+    const currentTabSelected = document.getElementsByClassName('tab-selected')[0];
+
+    currentTabSelected.classList.remove('tab-selected');
+    elementClicked.classList.add('tab-selected');
+}
 
 // Handle show/hide all user's projects (div that contains My Projects text)
 function openCloseMyProjects(button){

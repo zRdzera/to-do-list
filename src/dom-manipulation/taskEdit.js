@@ -4,7 +4,7 @@ import { getTaskElements, taskFormDataHandler } from "../commonFunctions.js";
 import { appendToModal, removeFromModal } from "./modal.js";
 import { createTaskElementAside } from "./projectAside.js";
 import { createTaskElementMain } from "./projectMain.js";
-import { todayTasksSection } from "./today.js";
+import { getFilteredTasks } from "./todayAndWeekTasks.js";
 
 export function editTaskForm(task, projectId, form){
     const formTitle = form.querySelector('.form-header');
@@ -79,11 +79,18 @@ function saveModTaskToProject(taskParameters, parentProjectId){
     }
 }
 
-function checkIfTodayMain(){
+function checkIfTodayOrWeek(){
     const main = document.getElementById('main-content');
-    const headerIdentifier = main.querySelector('#today-header');
+    const todayIdentifier = main.querySelector('#today-header');
+    const weekIdentifier = main.querySelector('#week-header');
 
-    return main.firstElementChild === headerIdentifier ? true : false;
+    if(main.firstElementChild === todayIdentifier)
+        return 'today';
+
+    if(main.firstElementChild === weekIdentifier)
+        return 'week';
+
+    return false;
 }
 
 // Update the element in the DOM with the new values (aside and main sections)
@@ -95,8 +102,9 @@ function updateTaskElement(task, projectId){
     taskListAside.insertBefore(updatedAsideTask, taskAside);
     taskListAside.removeChild(taskAside);
 
-    if(checkIfTodayMain()){ 
-        todayTasksSection();
+    const sectionToUpdate = checkIfTodayOrWeek();
+    if(sectionToUpdate){
+        getFilteredTasks(`${sectionToUpdate}`);
     }
     else {
         // Update task element within the project in the main-content (remove the old task and place it the new)

@@ -1,6 +1,7 @@
 import Project from "../app-logic/project.js";
 import saveProject from "../app-logic/storage.js";
 import { buttonWithImg, createElement, createEmptyHint, errorFieldCreator } from "../commonFunctions.js";
+import { selectTab } from "./asideSection.js";
 import { expandProjectTasks } from "./projectMain.js";
 
 // Function to generate a form to create a new project
@@ -126,6 +127,7 @@ export function createTaskElementAside(task){
 function newProjectButtonListener(buttonShowHide, buttonExpand){
     buttonShowHide.addEventListener('click', () => openCloseProjectTasks(buttonShowHide));
     buttonExpand.addEventListener('click', (event) => {
+        selectTab(buttonExpand.parentElement);
         expandProjectTasks(buttonExpand); // Expand means that the project will be expanded to the main-content
         event.stopPropagation();
     });
@@ -134,14 +136,10 @@ function newProjectButtonListener(buttonShowHide, buttonExpand){
 // Handle show/hide tasks of a project, by clicking in the project div
 function openCloseProjectTasks(projectButton){
     const iconInsideButton = projectButton.getElementsByTagName('img')[0];
-    
-    // Mantain default class that's used for button styling
-    const divClasses = projectButton.getAttribute('class').split(' ');
-    const permanentClass = divClasses[0];
-    const changeableClass = divClasses[1];
 
-    if(changeableClass === 'show'){
-        projectButton.setAttribute('class', `${permanentClass} hide`);
+    if(projectButton.classList.contains('show')){
+        projectButton.classList.remove('show');
+        projectButton.classList.add('hide');
        
         // Arrow effect using an animation defined in the css file, from open to closed (bottom to right)
         iconInsideButton.style.cssText = 'opacity: 0;';
@@ -152,7 +150,8 @@ function openCloseProjectTasks(projectButton){
         hideTasksOfProject(projectButton);
     }
     else {
-        projectButton.setAttribute('class', `${permanentClass} show`);   
+        projectButton.classList.remove('hide');
+        projectButton.classList.add('show');
         
         // Arrow effect using an animation defined in the css file, from closed to open (right to bottom)
         iconInsideButton.style.cssText = 'opacity: 0;';
