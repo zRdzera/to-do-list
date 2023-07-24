@@ -41,7 +41,10 @@ export default function startUIAndListeners(){
 export function selectTab(elementClicked){
     const currentTabSelected = document.getElementsByClassName('tab-selected')[0];
 
-    currentTabSelected.classList.remove('tab-selected');
+    if(!(currentTabSelected === undefined)){
+        currentTabSelected.classList.remove('tab-selected');
+    }
+
     elementClicked.classList.add('tab-selected');
 }
 
@@ -91,23 +94,24 @@ function openCloseAside(){
         
         if(currentClass === 'show'){
             hamburguerMenu.setAttribute('class', 'hide');
-            hideAside();
+            toggleAside();
         }
         else {
             hamburguerMenu.setAttribute('class', 'show');
-            showAside();
+            toggleAside();
         }
     });
 }
 
-function showAside(){
+function toggleAside(){
     const aside = document.getElementById('aside-navigation');
-    aside.setAttribute('class', 'aside-show'); // Add this class to put main-content back to its place
-    aside.style.cssText = 'display: flex;';
-}
 
-function hideAside(){
-    const aside = document.getElementById('aside-navigation');
-    aside.setAttribute('class', 'aside-hide'); // Add this class to allow the main-content to grow
-    aside.style.cssText = 'display: none;';
+    if(aside.getAttribute('class') === 'aside-show'){
+        aside.setAttribute('class', 'aside-hide');
+        aside.style.cssText = 'display: none;';
+    }
+    else {
+        aside.setAttribute('class', 'aside-show'); // Add this class to put main-content back to its place
+        aside.style.cssText = 'display: flex;';
+    }
 }
