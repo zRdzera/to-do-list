@@ -1,54 +1,79 @@
 <!DOCTYPE html>
-    <html lang="en">
+<html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Tododoo app</title>
 
         <!-- TAB ICON -->
-        <link rel="icon" href="assets/todo-icon.png">
+        <link rel="icon" href="assets/todo-icon.png" />
 
         <!-- FONTS -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter&family=Roboto&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter&family=Roboto&display=swap"
+            rel="stylesheet"
+        />
 
         <!-- JS -->
-        <script defer src="/dist/main.bundle.js"></script>
+        <script defer src="main.bundle.js"></script>
 
         <!-- CSS -->
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
         <header id="todo-header">
             <button id="hamburguer-menu-button" class="show" type="button">
-                <img src="./assets/header-icons/hamburguer.svg" alt="Hamburguer menu icon">
+                <img
+                    src="./assets/header-icons/hamburguer.svg"
+                    alt="Hamburguer menu icon"
+                />
             </button>
             <button id="home-button" type="button">
-                <img src="./assets/header-icons/home-icon.svg" alt="Home icon">
+                <img
+                    src="./assets/header-icons/home-icon.svg"
+                    alt="Home icon"
+                />
             </button>
-            <input type="text" id="search-input" placeholder="Search">
+            <input type="text" id="search-input" placeholder="Search" />
         </header>
 
         <aside id="aside-navigation" class="aside-show">
             <button id="today-todo-button" type="button">
                 <p>Today</p>
-                <img src="./assets/aside-icons/today-icon-28.png" alt="Today icon">
+                <img
+                    src="./assets/aside-icons/today-icon-28.png"
+                    alt="Today icon"
+                />
             </button>
-            
+
             <button id="week-todo-button" type="button">
                 <p>This Week</p>
-                <img src="./assets/aside-icons/week-icon-28.png" alt="Week icon">
+                <img
+                    src="./assets/aside-icons/week-icon-28.png"
+                    alt="Week icon"
+                />
             </button>
 
             <div id="user-projects">
                 <div id="create-and-list-user-projects">
-                    <button id="user-projects-button" class="show" type="button">
+                    <button
+                        id="user-projects-button"
+                        class="show"
+                        type="button"
+                    >
                         <p>My projects</p>
-                        <img src="./assets/aside-icons/arrow-down-icon-26.png" alt="Arrow down icon">
+                        <img
+                            src="./assets/aside-icons/arrow-down-icon-26.png"
+                            alt="Arrow down icon"
+                        />
                     </button>
                     <button id="add-new-project-button" type="button">
-                        <img src="./assets/aside-icons/plus-icon.svg" alt="Plus icon">
+                        <img
+                            src="./assets/aside-icons/plus-icon.svg"
+                            alt="Plus icon"
+                        />
                     </button>
                 </div>
 
